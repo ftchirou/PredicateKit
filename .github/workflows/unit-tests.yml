@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: xcodebuild test -project PredicateKit.xcodeproj -scheme PredicateKit -resultBundlePath test-results.xcresult
+    - name: Publish test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results.xcresult
+        path: test-results.xcresult
