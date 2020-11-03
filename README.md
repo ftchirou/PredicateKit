@@ -10,9 +10,9 @@ comparisons and logical operators, literal values, and functions.
 ## Contents
 - [Motivation](#motivation)
 - [Installation](#installation)
-  - [Swift Package Manager](#swift-package-manager)
   - [Carthage](#carthage)
   - [CocoaPods](#cocoapods)
+  - [Swift Package Manager](#swift-package-manager)
 - [Quick start](#quick-start)
   - [Fetching objects](#fetching-objects)
   - [Configuring the fetch](#configuring-the-fetch)
@@ -91,7 +91,7 @@ github "ftchirou/PredicateKit" ~> 0.1.0
 Add the following line to your `Podfile`.
 
 ```
-pod `PredicateKit', ~> '0.1.0'
+pod `PredicateKit', ~> '0.1'
 ```
 
 ## Swift Package Manager
