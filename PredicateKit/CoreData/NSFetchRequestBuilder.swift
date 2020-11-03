@@ -55,13 +55,13 @@ struct NSFetchRequestBuilder {
     request.limit.flatMap { fetchRequest.fetchLimit = $0 }
     request.offset.flatMap { fetchRequest.fetchOffset = $0 }
     request.batchSize.flatMap { fetchRequest.fetchBatchSize = $0 }
-    request.propertiesToPrefetch.flatMap { fetchRequest.relationshipKeyPathsForPrefetching = $0.map(\.stringValue) }
+    request.propertiesToPrefetch.flatMap { fetchRequest.relationshipKeyPathsForPrefetching = $0.map {$0.stringValue } }
     request.includesPendingChanges.flatMap { fetchRequest.includesPendingChanges = $0 }
     request.affectedStores.flatMap { fetchRequest.affectedStores = $0 }
-    request.propertiesToFetch.flatMap { fetchRequest.propertiesToFetch = $0.map(\.stringValue) }
+    request.propertiesToFetch.flatMap { fetchRequest.propertiesToFetch = $0.map { $0.stringValue } }
     request.returnsDistinctResults.flatMap { fetchRequest.returnsDistinctResults = $0 }
     request.shouldRefreshRefetchedObjects.flatMap { fetchRequest.shouldRefreshRefetchedObjects = $0 }
-    request.propertiesToGroupBy.flatMap { fetchRequest.propertiesToGroupBy = $0.map(\.stringValue) }
+    request.propertiesToGroupBy.flatMap { fetchRequest.propertiesToGroupBy = $0.map { $0.stringValue } }
     request.havingPredicate.flatMap { fetchRequest.havingPredicate = makePredicate(from: $0) }
     request.includesSubentities.flatMap { fetchRequest.includesSubentities = $0 }
     request.returnsObjectsAsFaults.flatMap { fetchRequest.returnsObjectsAsFaults = $0 }

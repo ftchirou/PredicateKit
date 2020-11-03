@@ -20,7 +20,7 @@ import PackageDescription
 
 let package = Package(
   name: "PredicateKit",
-  platforms: [.macOS(.v10_15), .iOS(.v11), .tvOS(.v12), .watchOS(.v5)],
+  platforms: [.macOS(.v10_15), .iOS(.v11), .tvOS(.v11), .watchOS(.v5)],
   products: [.library(name: "PredicateKit", targets: ["PredicateKit"])],
   targets: [
     .target(
