@@ -417,8 +417,8 @@ You can run aggregate operations on a set of relationships using the `all(_:)`, 
 
 ```swift
 class Account: NSManagedObject {
-  let name: String
-  let profiles: Set<Profile>
+  @NSManaged var name: String
+  @NSManaged var profiles: Set<Profile>
 }
 
 class Profile: NSManagedObject {

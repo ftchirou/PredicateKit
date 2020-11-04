@@ -42,7 +42,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
 
-    XCTAssertTrue(keyPath == \Data.count)
+    XCTAssertEqual(keyPath, \Data.count)
     XCTAssertEqual(comparison.operator, .lessThan)
     XCTAssertEqual(value, 42)
   }
@@ -114,7 +114,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .index(4))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .lessThan)
     XCTAssertEqual(value, 5)
@@ -208,7 +208,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .lessThanOrEqual)
     XCTAssertEqual(value, 5)
@@ -279,7 +279,7 @@ final class OperatorTests: XCTestCase {
     }
 
     let value = try XCTUnwrap(comparison.value as? Double)
-    XCTAssertTrue(keyPath == \Data.stocks)
+    XCTAssertEqual(keyPath, \Data.stocks)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 35.0)
   }
@@ -303,7 +303,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .first)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 5)
@@ -398,7 +398,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .greaterThanOrEqual)
     XCTAssertEqual(value, 5)
@@ -493,7 +493,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .index(2))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .greaterThan)
     XCTAssertEqual(value, 5)
@@ -536,7 +536,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? String)
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertTrue(keyPath.arrayKey == \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .beginsWith)
     XCTAssertEqual(value, "Hello, World!")
@@ -642,7 +642,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? String)
     XCTAssertEqual(keyPath.type, .all)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .contains)
     XCTAssertEqual(value, "Hello, World!")
@@ -748,7 +748,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? String)
     XCTAssertEqual(keyPath.type, .any)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .endsWith)
     XCTAssertEqual(value, "Hello, World!")
@@ -854,7 +854,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? String)
     XCTAssertEqual(keyPath.type, .none)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .like)
     XCTAssertEqual(value, "Hello, World!")
@@ -962,7 +962,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? String)
     XCTAssertEqual(keyPath.type, .first)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .matches)
     XCTAssertEqual(value, regexp.pattern)
@@ -1136,7 +1136,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? [Int])
     XCTAssertEqual(keyPath.type, .first)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .between)
     XCTAssertEqual(value, [21, 42])
@@ -1242,7 +1242,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? [String])
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .in)
     XCTAssertEqual(value, ["hello", "world"])
@@ -1263,7 +1263,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? [String])
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .in)
     XCTAssertEqual(comparison.options, .caseInsensitive)
@@ -1285,7 +1285,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? [String])
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .in)
     XCTAssertEqual(comparison.options, .diatraticInsensitive)
@@ -1307,7 +1307,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? [String])
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .in)
     XCTAssertEqual(comparison.options, .normalized)
@@ -1330,7 +1330,7 @@ final class OperatorTests: XCTestCase {
     }
 
     let value = try XCTUnwrap(comparison.value as? Double)
-    XCTAssertEqual(keyPath.arrayKey, \Data.stocks)
+    XCTAssertEqual(keyPath.array, \Data.stocks)
     XCTAssertEqual(keyPath.elementKeyPath, \Double.self)
     XCTAssertEqual(keyPath.type, .any)
     XCTAssertEqual(comparison.operator, .greaterThanOrEqual)
@@ -1352,7 +1352,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
 
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 42)
@@ -1385,9 +1385,9 @@ final class OperatorTests: XCTestCase {
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .any)
     XCTAssertEqual(keyPath.elementKeyPath, \NestedRelationship.count)
-    XCTAssertEqual(keyPath.arrayKey.type, .first)
-    XCTAssertEqual(keyPath.arrayKey.arrayKey, \Data.relationships)
-    XCTAssertEqual(keyPath.arrayKey.elementKeyPath, \Relationship.relationships)
+    XCTAssertEqual(keyPath.array.type, .first)
+    XCTAssertEqual(keyPath.array.array, \Data.relationships)
+    XCTAssertEqual(keyPath.array.elementKeyPath, \Relationship.relationships)
     XCTAssertEqual(comparison.operator, .lessThan)
     XCTAssertEqual(value, 42)
   }
@@ -1406,7 +1406,7 @@ final class OperatorTests: XCTestCase {
     }
 
     let value = try XCTUnwrap(comparison.value as? Double)
-    XCTAssertEqual(keyPath.arrayKey, \Data.stocks)
+    XCTAssertEqual(keyPath.array, \Data.stocks)
     XCTAssertEqual(keyPath.elementKeyPath, \Double.self)
     XCTAssertEqual(keyPath.type, .all)
     XCTAssertEqual(comparison.operator, .lessThan)
@@ -1428,7 +1428,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
 
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 42)
@@ -1461,9 +1461,9 @@ final class OperatorTests: XCTestCase {
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .all)
     XCTAssertEqual(keyPath.elementKeyPath, \NestedRelationship.count)
-    XCTAssertEqual(keyPath.arrayKey.type, .last)
-    XCTAssertEqual(keyPath.arrayKey.arrayKey, \Data.relationships)
-    XCTAssertEqual(keyPath.arrayKey.elementKeyPath, \Relationship.relationships)
+    XCTAssertEqual(keyPath.array.type, .last)
+    XCTAssertEqual(keyPath.array.array, \Data.relationships)
+    XCTAssertEqual(keyPath.array.elementKeyPath, \Relationship.relationships)
     XCTAssertEqual(comparison.operator, .greaterThanOrEqual)
     XCTAssertEqual(value, 42)
   }
@@ -1482,7 +1482,7 @@ final class OperatorTests: XCTestCase {
     }
 
     let value = try XCTUnwrap(comparison.value as? Double)
-    XCTAssertEqual(keyPath.arrayKey, \Data.stocks)
+    XCTAssertEqual(keyPath.array, \Data.stocks)
     XCTAssertEqual(keyPath.elementKeyPath, \Double.self)
     XCTAssertEqual(keyPath.type, .none)
     XCTAssertEqual(comparison.operator, .equal)
@@ -1504,7 +1504,7 @@ final class OperatorTests: XCTestCase {
 
     let value = try XCTUnwrap(comparison.value as? Int)
 
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .greaterThan)
     XCTAssertEqual(value, 42)
@@ -1537,9 +1537,9 @@ final class OperatorTests: XCTestCase {
     let value = try XCTUnwrap(comparison.value as? Int)
     XCTAssertEqual(keyPath.type, .none)
     XCTAssertEqual(keyPath.elementKeyPath, \NestedRelationship.count)
-    XCTAssertEqual(keyPath.arrayKey.type, .index(2))
-    XCTAssertEqual(keyPath.arrayKey.arrayKey, \Data.relationships)
-    XCTAssertEqual(keyPath.arrayKey.elementKeyPath, \Relationship.relationships)
+    XCTAssertEqual(keyPath.array.type, .index(2))
+    XCTAssertEqual(keyPath.array.array, \Data.relationships)
+    XCTAssertEqual(keyPath.array.elementKeyPath, \Relationship.relationships)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 42)
   }
@@ -1554,7 +1554,7 @@ final class OperatorTests: XCTestCase {
       return
     }
 
-    XCTAssertTrue(keyPath == \Data.tags)
+    XCTAssertEqual(keyPath, \Data.tags)
     XCTAssertEqual(index, 2)
   }
 
@@ -1566,7 +1566,7 @@ final class OperatorTests: XCTestCase {
       return
     }
 
-    XCTAssertTrue(keyPath == \Data.tags)
+    XCTAssertEqual(keyPath, \Data.tags)
     XCTAssertEqual(index, 42)
   }
 
@@ -1579,7 +1579,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(2))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.relationships)
     XCTAssertEqual(indexValue, 0)
   }
@@ -1594,7 +1594,7 @@ final class OperatorTests: XCTestCase {
       return
     }
 
-    XCTAssertTrue(keyPath == \Data.tags)
+    XCTAssertEqual(keyPath, \Data.tags)
   }
 
   func testArrayElementKeyPathFirstReturnsArrayElement() throws {
@@ -1606,7 +1606,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(5))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.relationships)
   }
 
@@ -1632,7 +1632,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(2))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.relationships)
   }
   
@@ -1658,7 +1658,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(5))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.relationships)
   }
 
@@ -1684,7 +1684,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(5))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.relationships)
   }
 
@@ -1734,7 +1734,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .index(5))
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.stocks)
   }
 
@@ -1760,7 +1760,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .first)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.stocks)
   }
   
@@ -1786,7 +1786,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.stocks)
   }
 
@@ -1812,7 +1812,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .last)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.stocks)
   }
   
@@ -1838,7 +1838,7 @@ final class OperatorTests: XCTestCase {
     }
 
     XCTAssertEqual(keyPath.type, .first)
-    XCTAssertEqual(keyPath.arrayKey, \Data.relationships)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.stocks)
   }
 
@@ -1941,7 +1941,7 @@ final class OperatorTests: XCTestCase {
     }
 
     let value = try XCTUnwrap(comparison.value as? String)
-    XCTAssertTrue(keyPath == \Data.text)
+    XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, "Hello, World!")
   }

@@ -309,7 +309,7 @@ public struct ArrayElementKeyPath<Array, Value>: Expression where Array: Express
   public typealias Element = Array.Value.Element
 
   let type: ArrayElementKeyPathType
-  let arrayKey: Array
+  let array: Array
   let elementKeyPath: AnyKeyPath
 }
 
@@ -681,11 +681,11 @@ extension Comparison {
 extension ArrayElementKeyPath {
   fileprivate init(
     _ type: ArrayElementKeyPathType,
-    _ arrayKey: Array,
+    _ array: Array,
     _ elementKeyPath: AnyKeyPath
   ) {
     self.type = type
-    self.arrayKey = arrayKey
+    self.array = array
     self.elementKeyPath = elementKeyPath
   }
 

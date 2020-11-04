@@ -37,10 +37,7 @@ struct NSFetchRequestBuilder {
   private let entityName: String
   private let options: Options
 
-  init(
-    entityName: String,
-    options: Options = .init(keyPathsPrefix: nil)
-  ) {
+  init(entityName: String, options: Options = .init(keyPathsPrefix: nil)) {
     self.entityName = entityName
     self.options = options
   }
@@ -69,9 +66,7 @@ struct NSFetchRequestBuilder {
     return fetchRequest
   }
 
-  fileprivate func makePredicate<Root>(
-    from predicate: Predicate<Root>
-  ) -> NSPredicate {
+  fileprivate func makePredicate<Root>(from predicate: Predicate<Root>) -> NSPredicate {
     switch predicate {
     case let .comparison(comparison):
       switch comparison.modifier {
@@ -220,13 +215,13 @@ extension ArrayElementKeyPath: NSExpressionConvertible where Array: NSExpression
     let value: String = {
       switch type {
       case .any, .all, .none:
-        return "\(arrayKey.toNSExpression(options: options)).\(elementKeyPath.stringValue)"
+        return "\(array.toNSExpression(options: options)).\(elementKeyPath.stringValue)"
       case .first:
-        return "\(arrayKey.toNSExpression(options: options))[FIRST].\(elementKeyPath.stringValue)"
+        return "\(array.toNSExpression(options: options))[FIRST].\(elementKeyPath.stringValue)"
       case .last:
-        return "\(arrayKey.toNSExpression(options: options))[LAST].\(elementKeyPath.stringValue)"
+        return "\(array.toNSExpression(options: options))[LAST].\(elementKeyPath.stringValue)"
       case let .index(index):
-        return "\(arrayKey.toNSExpression(options: options))[\(index)].\(elementKeyPath.stringValue)"
+        return "\(array.toNSExpression(options: options))[\(index)].\(elementKeyPath.stringValue)"
       }
     }()
 
