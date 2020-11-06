@@ -1,4 +1,4 @@
-# 🚀 PredicateKit
+# 🎯 PredicateKit
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/ftchirou/PredicateKit/Test/main) <img src="https://img.shields.io/badge/coverage-100%25-green"> ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ftchirou/PredicateKit) <img src="https://img.shields.io/badge/platforms-iOS%2011%2B%20%7C%20macOS%2010.15%2B%20%7C%20watchOS%205%2B%20%7C%20tvOS%2011%2B-lightgrey"> <img src="https://img.shields.io/badge/swift-%3E%3D%205.1-orange">
 
 **PredicateKit** is an alternative to [`NSPredicate`](https://developer.apple.com/documentation/foundation/nspredicate) allowing you to 
@@ -237,14 +237,33 @@ let predicate = (\Note.text).beginsWith("Hello, World!", .normalized)
 
 #### Membership checks
 
-You can use the `between` or `in` functions to determine whether a property's value is within a specified set of values of the same type.
+###### between
+
+You can use the `between` function or the `~=` operator to determine whether a property's value is within a specified range.
 
 ```swift
 // Matches all notes where the number of views is between 100 and 200.
 let predicate = (\Note.numberOfViews).between(100...200)
 
+// Or
+let predicate = \Note.numberOfViews ~= 100...200
+```
+
+###### in
+
+You can use the  `in`  function to determine whether a property's value is one of the values in a specified list.
+
+
+```swift
 // Matches all notes where the text is one of the elements in the specified list.
 let predicate = (\Note.text).in("a", "b", "c", "d")
+```
+
+When the property is of type `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
+
+```swift
+// Case-insensitive comparison.
+let predicate = (\Note.text).in(["a", "b", "c", "d"], .caseInsensitive)
 ```
 
 ### Compound predicates

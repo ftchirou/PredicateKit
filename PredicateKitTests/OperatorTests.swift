@@ -1121,11 +1121,52 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, [21, 42])
   }
 
+  func testKeyPathBetweenOperator() throws {
+    let predicate = \Data.count ~= 21...42
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("count ~= 21...42 should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Int>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? [Int])
+
+    XCTAssertEqual(keyPath, \Data.count)
+    XCTAssertEqual(comparison.operator, .between)
+    XCTAssertEqual(value, [21, 42])
+  }
+
   func testArrayElementKeyPathBetwen() throws {
     let predicate = (\Data.relationships).first(\.count).between(21...42)
 
     guard case let .comparison(comparison) = predicate else {
       XCTFail("relationships.first.count.between(21...42) should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(ArrayElementKeyPath<KeyPath<Data, [Relationship]>, Int>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? [Int])
+    XCTAssertEqual(keyPath.type, .first)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
+    XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
+    XCTAssertEqual(comparison.operator, .between)
+    XCTAssertEqual(value, [21, 42])
+  }
+
+  func testArrayElementKeyPathBetwenOperator() throws {
+    let predicate = (\Data.relationships).first(\.count) ~= 21...42
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("relationships.first.count ~= 21...42 should result in a comparison")
       return
     }
 

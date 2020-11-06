@@ -428,7 +428,14 @@ extension Expression where Value: Comparable & Primitive {
   }
 }
 
-// MARK: - Aggregate comparisons
+public func ~= <E: Expression, T: Comparable & Primitive> (
+  lhs: E,
+  rhs: ClosedRange<T>
+) -> Predicate<E.Root> where E.Value == T {
+  lhs.between(rhs)
+}
+
+// MARK: - Aggregate Operations
 
 extension Expression where Value: AnyArrayOrSet {
   public var all: ArrayElementKeyPath<Self, Value.Element> {
