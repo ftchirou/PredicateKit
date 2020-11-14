@@ -91,7 +91,7 @@ github "ftchirou/PredicateKit" ~> 1.0.0
 Add the following line to your `Podfile`.
 
 ```
-pod `PredicateKit', ~> '1.0.0'
+pod 'PredicateKit', ~> '1.0.0'
 ```
 
 ## Swift Package Manager
@@ -323,7 +323,7 @@ let predicate = (\Note.tags).last == "To Do"
 
 ```swift
 // Matches all notes where the third tag contains 'To Do'.
-let _: Predicate<Note> = (\Note.tags).at(index: 2).contains("To Do")
+let predicate = (\Note.tags).at(index: 2).contains("To Do")
 ```
 
 #### Count the number of elements in an array
