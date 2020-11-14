@@ -148,7 +148,6 @@ let notes: [Note] = try managedObjectContext
   .fetch(where: (\Note.text).contains("Hello, World!") && \Note.creationDate < Date())
   .limit(50) // Return 50 objects matching the predicate.
   .offset(100) // Skip the first 100 objects matching the predicate.
-  .returningDistinctsResults(true) // Ignore duplicates.
   .sorted(by: \Note.creationDate) // Sort the matching objects by their creation date.
   .result()
 ```
@@ -228,7 +227,7 @@ These functions accept a second optional parameter specifying how the string com
 // Case-insensitive comparison.
 let predicate = (\Note.text).beginsWith("Hello, World!", .caseInsensitive)
 
-// Diatratic-insensitive comparison.
+// Diacritic-insensitive comparison.
 let predicate = (\Note.text).beginsWith("Hello, World!", .diacriticInsensitive)
 
 // Normalized comparison.
