@@ -184,8 +184,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testInDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).in(["hello", "world"], .diatraticInsensitive))
+  func testInDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).in(["hello", "world"], .diacriticInsensitive))
     let builder = makeRequestBuilder()
 
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -226,8 +226,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testIsEqualToDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).isEqualTo("lorem", .diatraticInsensitive))
+  func testIsEqualToDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).isEqualTo("lorem", .diacriticInsensitive))
     let builder = makeRequestBuilder()
 
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -282,8 +282,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testBeginsWithDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).beginsWith("lorem", .diatraticInsensitive))
+  func testBeginsWithDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).beginsWith("lorem", .diacriticInsensitive))
     let builder = makeRequestBuilder()
   
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -338,8 +338,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testContainsDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).contains("lorem", .diatraticInsensitive))
+  func testContainsDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).contains("lorem", .diacriticInsensitive))
     let builder = makeRequestBuilder()
   
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -394,8 +394,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testEndsWithDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).endsWith("lorem", .diatraticInsensitive))
+  func testEndsWithDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).endsWith("lorem", .diacriticInsensitive))
     let builder = makeRequestBuilder()
   
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -450,8 +450,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testLikeDiatraticInsensitivePredicate() throws {
-    let request = makeRequest((\Data.text).like("lorem", .diatraticInsensitive))
+  func testLikeDiacriticInsensitivePredicate() throws {
+    let request = makeRequest((\Data.text).like("lorem", .diacriticInsensitive))
     let builder = makeRequestBuilder()
   
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -507,9 +507,9 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.options, .caseInsensitive)
   }
 
-  func testMatchesDiatraticInsensitivePredicate() throws {
+  func testMatchesDiacriticInsensitivePredicate() throws {
     let regexp = try NSRegularExpression(pattern: "[a-z]", options: [])
-    let request = makeRequest((\Data.text).matches(regexp, .diatraticInsensitive))
+    let request = makeRequest((\Data.text).matches(regexp, .diacriticInsensitive))
     let builder = makeRequestBuilder()
   
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)

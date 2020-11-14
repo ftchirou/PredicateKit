@@ -563,8 +563,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "Hello, World!")
   }
 
-  func testBeginsWithDiatraticInsensitive() throws {
-    let predicate = (\Data.text).beginsWith("Hello, World!", .diatraticInsensitive)
+  func testBeginsWithDiacriticInsensitive() throws {
+    let predicate = (\Data.text).beginsWith("Hello, World!", .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.beginsWith('Hello, World!') should result in a comparison")
@@ -580,7 +580,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .beginsWith)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "Hello, World!")
   }
 
@@ -669,8 +669,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "Hello, World!")
   }
 
-  func testContainsDiatraticInsensitive() throws {
-    let predicate = (\Data.text).contains("Hello, World!", .diatraticInsensitive)
+  func testContainsDiacriticInsensitive() throws {
+    let predicate = (\Data.text).contains("Hello, World!", .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.contains('Hello, World!') should result in a comparison")
@@ -686,7 +686,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .contains)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "Hello, World!")
   }
 
@@ -775,8 +775,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "Hello, World!")
   }
 
-  func testEndsWithDiatraticInsensitive() throws {
-    let predicate = (\Data.text).endsWith("Hello, World!", .diatraticInsensitive)
+  func testEndsWithDiacriticInsensitive() throws {
+    let predicate = (\Data.text).endsWith("Hello, World!", .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.endsWith('Hello, World!') should result in a comparison")
@@ -792,7 +792,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .endsWith)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "Hello, World!")
   }
 
@@ -881,8 +881,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "Hello, World!")
   }
 
-  func testLikeDiatraticInsensitive() throws {
-    let predicate = (\Data.text).like("Hello, World!", .diatraticInsensitive)
+  func testLikeDiacriticInsensitive() throws {
+    let predicate = (\Data.text).like("Hello, World!", .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.like('Hello, World!') should result in a comparison")
@@ -898,7 +898,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .like)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "Hello, World!")
   }
 
@@ -990,9 +990,9 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "[a-z]")
   }
 
-  func testMatchesDiatraticInsensitive() throws {
+  func testMatchesDiacriticInsensitive() throws {
     let regexp = try NSRegularExpression(pattern: "[a-z]")
-    let predicate = (\Data.text).matches(regexp, .diatraticInsensitive)
+    let predicate = (\Data.text).matches(regexp, .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.beginsWith('Hello, World!') should result in a comparison")
@@ -1008,7 +1008,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .matches)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "[a-z]")
   }
 
@@ -1057,8 +1057,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "Hello, World!")
   }
 
-  func testIsEqualToDiatraticInsensitive() throws {
-    let predicate = (\Data.text).isEqualTo("Hello, World!", .diatraticInsensitive)
+  func testIsEqualToDiacriticInsensitive() throws {
+    let predicate = (\Data.text).isEqualTo("Hello, World!", .diacriticInsensitive)
     
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.beginsWith('Hello, World!') should result in a comparison")
@@ -1074,7 +1074,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .equal)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, "Hello, World!")
   }
 
@@ -1226,8 +1226,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, ["hello", "world", "welcome"])
   }
 
-  func testKeyPathInDiatraticInsensitive() throws {
-    let predicate: Predicate<Data> = (\Data.text).in(["hello", "world", "welcome"], .diatraticInsensitive)
+  func testKeyPathInDiacriticInsensitive() throws {
+    let predicate: Predicate<Data> = (\Data.text).in(["hello", "world", "welcome"], .diacriticInsensitive)
 
     guard case let .comparison(comparison) = predicate else {
       XCTFail("text.in('hello', 'world', 'welcome') should result in a comparison")
@@ -1243,7 +1243,7 @@ final class OperatorTests: XCTestCase {
 
     XCTAssertEqual(keyPath, \Data.text)
     XCTAssertEqual(comparison.operator, .in)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, ["hello", "world", "welcome"])
   }
 
@@ -1311,8 +1311,8 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, ["hello", "world"])
   }
 
-  func testArrayElementKeyPathInDiatraticInsensitive() throws {
-    let predicate: Predicate<Data> = (\Data.relationships).last(\.text).in(["hello", "world"], .diatraticInsensitive)
+  func testArrayElementKeyPathInDiacriticInsensitive() throws {
+    let predicate: Predicate<Data> = (\Data.relationships).last(\.text).in(["hello", "world"], .diacriticInsensitive)
 
     guard case let .comparison(comparison) = predicate else {
       XCTFail("relationships.first.text.in('hello', 'world') should result in a comparison")
@@ -1329,7 +1329,7 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(keyPath.array, \Data.relationships)
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.text)
     XCTAssertEqual(comparison.operator, .in)
-    XCTAssertEqual(comparison.options, .diatraticInsensitive)
+    XCTAssertEqual(comparison.options, .diacriticInsensitive)
     XCTAssertEqual(value, ["hello", "world"])
   }
 

@@ -83,7 +83,7 @@ configuration, etc. Simply `import PredicateKit`, write your predicates and use 
 Add the following line to your `Cartfile`.
 
 ```
-github "ftchirou/PredicateKit" ~> 0.1.0
+github "ftchirou/PredicateKit" ~> 1.0.0
 ```
 
 ## CocoaPods
@@ -91,7 +91,7 @@ github "ftchirou/PredicateKit" ~> 0.1.0
 Add the following line to your `Podfile`.
 
 ```
-pod `PredicateKit', ~> '0.1'
+pod `PredicateKit', ~> '1.0.0'
 ```
 
 ## Swift Package Manager
@@ -100,7 +100,7 @@ Update the `dependencies` array in your `Package.swift`.
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/ftchirou/PredicateKit", .upToNextMajor(from: "0.1.0"))
+  .package(url: "https://github.com/ftchirou/PredicateKit", .upToNextMajor(from: "1.0.0"))
 ]
 ```
 
@@ -229,7 +229,7 @@ These functions accept a second optional parameter specifying how the string com
 let predicate = (\Note.text).beginsWith("Hello, World!", .caseInsensitive)
 
 // Diatratic-insensitive comparison.
-let predicate = (\Note.text).beginsWith("Hello, World!", .diatraticInsensitive)
+let predicate = (\Note.text).beginsWith("Hello, World!", .diacriticInsensitive)
 
 // Normalized comparison.
 let predicate = (\Note.text).beginsWith("Hello, World!", .normalized)

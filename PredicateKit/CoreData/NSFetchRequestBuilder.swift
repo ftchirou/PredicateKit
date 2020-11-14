@@ -146,7 +146,7 @@ struct NSFetchRequestBuilder {
       comparisonOptions.formUnion(.caseInsensitive)
     }
 
-    if options.contains(.diatraticInsensitive) {
+    if options.contains(.diacriticInsensitive) {
       comparisonOptions.formUnion(.diacriticInsensitive)
     }
 

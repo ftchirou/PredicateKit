@@ -339,7 +339,7 @@ public struct ComparisonOptions: OptionSet {
   public let rawValue: Int
 
   public static let caseInsensitive = ComparisonOptions(rawValue: 1 << 0)
-  public static let diatraticInsensitive = ComparisonOptions(rawValue: 1 << 1)
+  public static let diacriticInsensitive = ComparisonOptions(rawValue: 1 << 1)
   public static let normalized = ComparisonOptions(rawValue: 1 << 2)
 
   public init(rawValue: Int) {
