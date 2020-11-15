@@ -73,7 +73,7 @@ Concretely, **PredicateKit** provides
 using [key-paths](https://developer.apple.com/documentation/swift/keypath). This ensures that the usage of inexistant properties or typos are
 caught at compile time. Additionally, all operations such as comparisons, functions calls, etc. are strongly-typed, making it impossible to write invalid predicates.
 - **an improved developer experience**. Enjoy auto-completion and syntax highlighting when writing your predicates. In addition, PredicateKit
-is just a lightweight replacement for `NSPredicate`, no major changes to your codebase is required, no special protocol to conform to, no
+is just a lightweight replacement for `NSPredicate`, no major change to your codebase is required, no special protocol to conform to, no
 configuration, etc. Simply `import PredicateKit`, write your predicates and use the functions [`NSManagedObjectContext.fetch(where:)`](#fetching-objects) or [`NSManagedObjectContext.count(where:)`](#counting-objects) to execute them.
 
 # Installation
@@ -344,8 +344,8 @@ let predicate = (\Note.tags).size < 5
 If the elements of an array are numbers, you can combine or reduce them into a single number and use the result in a predicate.
 
 ```swift
-struct Account {
-  let purchases: [Double]
+class Account: NSManagedObject {
+  @NSManaged var purchases: [Double]
 }
 ```
 
