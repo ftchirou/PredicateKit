@@ -28,6 +28,12 @@ let package = Package(
       path: "PredicateKit",
       exclude: ["Info.plist"]
     ),
+    .testTarget(
+      name: "PredicateKitTests",
+      dependencies: ["PredicateKit"],
+      path: "PredicateKitTests",
+      exclude: ["Info.plist"]
+    ),
   ],
   swiftLanguageVersions: [.v5]
 )
