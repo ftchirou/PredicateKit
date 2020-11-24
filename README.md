@@ -135,6 +135,19 @@ let notes: [[String: Any]] = try managedObjectContext
   .result()
 ```
 
+### Fetching objects with an NSFetchedResultsController
+
+Instead of directly fetching results, you can use `fetchedResultsController()` to instantiate an NSFetchedResultsController with the configured fetch. `fetchedResultsController` has two optional parameters: `sectionNameKeyPath` is a KeyPath on the returned objects used to compute section info and `cacheName` is the name of a file to store pre-computed section info.
+
+###### Example
+
+```swift
+let controller: NSFetchedResultsController<Note> = managedObjectContext
+  .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
+  .sorted(by: \Note.creationDate, .descending)
+  .fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
+```
+
 ## Configuring the fetch
 
 `fetch(where:)` returns an object of type `FetchRequest`. You can apply a series of modifiers on this object to further configure how the objects should be matched and returned.
