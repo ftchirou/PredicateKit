@@ -371,11 +371,11 @@ public struct FetchRequest<Entity: NSManagedObject> {
     return try context.count(for: request)
   }
   
-   /// An NSFetchedResultsController initialized with the fetch request.
+   /// Returns an NSFetchedResultsController initialized with the fetch request.
    ///
    /// - Parameters:
-   ///    - sectionNameKeyPath - keypath on resulting objects that returns the section name. This will be used to pre-compute the section information. Defaults to `nil`.
-   ///    - cacheName - Section info is cached persistently to a private file under this name. Cached sections are checked to see if the time stamp matches the store, but not if you have illegally mutated the readonly fetch request, predicate, or sort descriptor. Defaults to `nil`.
+   ///    - sectionNameKeyPath - A key path on resulting objects that returns the section name. This will be used to pre-compute the section information. Defaults to `nil`.
+   ///    - cacheName - Pre-computed section info is cached persistently to a private file under this name. Cached sections are checked to see if the time stamp matches the store, but not if you have illegally mutated the readonly fetch request, predicate, or sort descriptor. Defaults to `nil`.
    ///
    /// - Returns: A fetchedResultsController with objects of type `Entity` matching the criteria specified by the fetch request.
    ///
@@ -384,13 +384,15 @@ public struct FetchRequest<Entity: NSManagedObject> {
    ///      let notes: NSFetchedResultsController<Note> = managedObjectContext
    ///        .fetch(where: (\Note.text).contains("Hello, World!"))
    ///        .sorted(by: \.creationDate, .descending)
-   ///        .fetchedResultsController()
+   ///        .fetchedResultsController(sectionNameKeyPath: \.creationDate)
    ///
-   public func fetchedResultsController(sectionNameKeyPath: String? = nil, cacheName: String? = nil) -> NSFetchedResultsController<Entity> {
+   public func fetchedResultsController<T: Comparable & Primitive>(sectionNameKeyPath: KeyPath<Entity, T>? = nil, cacheName: String? = nil) -> NSFetchedResultsController<Entity> {
      let request: NSFetchRequest<Entity> = requestBuilder.makeRequest(from: self)
      request.resultType = .managedObjectResultType
-     return NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context,
-                                       sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
+     return NSFetchedResultsController(fetchRequest: request,
+                                       managedObjectContext: self.context,
+                                       sectionNameKeyPath: sectionNameKeyPath?.stringValue,
+                                       cacheName: cacheName)
    }
 
   // MARK: -
