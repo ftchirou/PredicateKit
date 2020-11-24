@@ -370,6 +370,10 @@ public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Pre
   .comparison(.init(lhs, .equal, rhs))
 }
 
+public func != <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
+  .not(.comparison(.init(lhs, .equal, rhs)))
+}
+
 public func >= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .greaterThanOrEqual, rhs))
 }
