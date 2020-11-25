@@ -136,6 +136,8 @@ struct NSFetchRequestBuilder {
       return .like
     case .matches:
       return .matches
+    case .notEqual:
+      return .notEqualTo
     }
   }
 
@@ -298,7 +300,7 @@ extension Query: NSExpressionConvertible {
 
 // MARK: - KeyPath
 
-private extension AnyKeyPath {
+internal extension AnyKeyPath {
   var stringValue: String {
     // https://github.com/apple/swift/blob/main/stdlib/public/core/KeyPath.swift#L124
     guard let value = _kvcKeyPathString else {

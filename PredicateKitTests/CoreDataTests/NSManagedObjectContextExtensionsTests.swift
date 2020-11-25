@@ -570,6 +570,55 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
 
     XCTAssertEqual(count, 2)
   }
+  
+  func testFetchedResultsController() throws {
+    let now = Date()
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: .distantPast, numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: now, numberOfViews: 23, tags: ["greeting"]),
+      (text: "Not dead yet!", creationDate: now, numberOfViews: 18, tags: ["greeting"]),
+      (text: "Goodbye again!", creationDate: .distantFuture, numberOfViews: 3, tags: ["greeting"])
+    )
+    
+    let controller = container.viewContext
+      .fetch(where: \Note.creationDate == now)
+      .fetchedResultsController()
+    
+    try controller.performFetch()
+    let sectionCount = controller.sections?.count
+    let itemCount = controller.sections?.first?.numberOfObjects
+    
+    XCTAssertEqual(sectionCount, 1)
+    XCTAssertEqual(itemCount, 2)
+  }
+  
+  func testFetchedResultsControllerSections() throws {
+    let now = Date()
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: .distantPast, numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: now, numberOfViews: 23, tags: ["greeting"]),
+      (text: "Not dead yet!", creationDate: now, numberOfViews: 18, tags: ["greeting"]),
+      (text: "Goodbye again!", creationDate: .distantFuture, numberOfViews: 3, tags: ["greeting"])
+    )
+    
+    let controller = container.viewContext
+      .fetchAll()
+      .sorted(by: \Note.creationDate)
+      .fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
+    
+    try controller.performFetch()
+    
+    let sectionCount = controller.sections?.count
+    XCTAssertEqual(sectionCount, 3)
+    
+    let itemCount0 = controller.sections?[0].numberOfObjects
+    let itemCount1 = controller.sections?[1].numberOfObjects
+    let itemCount2 = controller.sections?[2].numberOfObjects
+    
+    XCTAssertEqual(itemCount0, 1)
+    XCTAssertEqual(itemCount1, 2)
+    XCTAssertEqual(itemCount2, 1)
+  }
 
   func testNSFetchRequestsAreForwardedToInspector() throws {
     let inspector = MockNSFetchRequestInspector()

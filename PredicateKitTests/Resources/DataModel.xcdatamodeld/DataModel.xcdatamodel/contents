@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17510.1" systemVersion="20A5395g" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName=".Account" syncable="YES">
         <attribute name="purchases" optional="YES" attributeType="Transformable"/>
     </entity>
@@ -26,11 +26,11 @@
         <relationship name="profiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Profile"/>
     </entity>
     <elements>
-        <element name="Note" positionX="-54" positionY="-9" width="128" height="89"/>
-        <element name="Account" positionX="-54" positionY="18" width="128" height="44"/>
-        <element name="BillingInfo" positionX="-45" positionY="27" width="128" height="59"/>
-        <element name="User" positionX="-27" positionY="45" width="128" height="59"/>
-        <element name="UserAccount" positionX="-9" positionY="72" width="128" height="59"/>
-        <element name="Profile" positionX="9" positionY="81" width="128" height="59"/>
+        <element name="Account" positionX="-54" positionY="18" width="128" height="58"/>
+        <element name="BillingInfo" positionX="-45" positionY="27" width="128" height="73"/>
+        <element name="Note" positionX="-54" positionY="-9" width="128" height="103"/>
+        <element name="Profile" positionX="9" positionY="81" width="128" height="73"/>
+        <element name="User" positionX="-27" positionY="45" width="128" height="73"/>
+        <element name="UserAccount" positionX="-9" positionY="72" width="128" height="73"/>
     </elements>
 </model>

@@ -317,6 +317,7 @@ enum ComparisonOperator {
   case lessThan
   case lessThanOrEqual
   case equal
+  case notEqual
   case greaterThanOrEqual
   case greaterThan
   case between
@@ -368,6 +369,10 @@ public func <= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Pr
 
 public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .equal, rhs))
+}
+
+public func != <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
+  .comparison(.init(lhs, .notEqual, rhs))
 }
 
 public func >= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {

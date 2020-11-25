@@ -83,6 +83,18 @@ final class PrimitiveTests: XCTestCase {
   func testDate() {
     XCTAssertEqual(Date.type, .date)
   }
+  
+  func testURL() {
+    XCTAssertEqual(URL.type, .url)
+  }
+
+  func testUUID() {
+    XCTAssertEqual(UUID.type, .uuid)
+  }
+
+  func testData() {
+    XCTAssertEqual(Data.type, .data)
+  }
 
   func testEnum() {
     enum IntEnum: Int, Primitive { case one }
@@ -111,6 +123,9 @@ final class PrimitiveTests: XCTestCase {
     XCTAssertEqual([Float].type, .array(.float))
     XCTAssertEqual([String].type, .array(.string))
     XCTAssertEqual([Date].type, .array(.date))
+    XCTAssertEqual([URL].type, .array(.url))
+    XCTAssertEqual([UUID].type, .array(.uuid))
+    XCTAssertEqual([Data].type, .array(.data))
   }
   
   func testOptional() {
@@ -130,6 +145,9 @@ final class PrimitiveTests: XCTestCase {
     XCTAssertEqual(Optional<Float>.type, .float)
     XCTAssertEqual(Optional<String>.type, .string)
     XCTAssertEqual(Optional<Date>.type, .date)
+    XCTAssertEqual(Optional<URL>.type, .url)
+    XCTAssertEqual(Optional<UUID>.type, .uuid)
+    XCTAssertEqual(Optional<Data>.type, .data)
   }
 
   func testComparableOptional() {

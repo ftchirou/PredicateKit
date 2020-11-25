@@ -40,6 +40,9 @@ public indirect enum Type: Equatable {
   case float
   case string
   case date
+  case url
+  case uuid
+  case data
   case wrapped(Type)
   case array(Type)
 }
@@ -110,6 +113,18 @@ extension Primitive where Self: RawRepresentable, RawValue: Primitive {
 
 extension Array: Primitive where Element: Primitive {
   public static var type: Type { .array(Element.type) }
+}
+
+extension URL: Primitive {
+  public static var type: Type { .url }
+}
+
+extension UUID: Primitive {
+  public static var type: Type { .uuid }
+}
+
+extension Data: Primitive {
+  public static var type: Type { .data }
 }
 
 extension Optional: Primitive where Wrapped: Primitive {

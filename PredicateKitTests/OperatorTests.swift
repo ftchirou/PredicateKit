@@ -308,6 +308,101 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(comparison.operator, .equal)
     XCTAssertEqual(value, 5)
   }
+  
+  // MARK: - !=
+
+  func testKeyPathNotEqualPrimitive() throws {
+    let predicate = \Data.count != 42
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("count != 42 should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Int>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? Int)
+
+    XCTAssertEqual(keyPath, \Data.count)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, 42)
+  }
+
+  func testFunctionNotEqualPrimitive() throws {
+    let predicate = (\Data.tags).count != 20
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("tags.count != 20 should result in a comparison")
+      return
+    }
+
+    guard let function = comparison.expression.as(Function<KeyPath<Data, [String]>, Int>.self) else {
+      XCTFail("the left side of the comparison should be a function")
+      return
+    }
+
+    guard case let .count(keyPath) = function else {
+      XCTFail("the function should be count:")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? Int)
+    XCTAssertEqual(keyPath, \Data.tags)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, 20)
+  }
+  
+  func testArrayElementNotEqualPrimitive() throws {
+    let predicate = (\Data.stocks).first != 35.0
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("stocks.first != 35.0 should result in a comparison")
+      return
+    }
+
+    guard let index = comparison.expression.as(Index<KeyPath<Data, [Double]>>.self) else {
+      XCTFail("the left side of the comparison should be an array element")
+      return
+    }
+
+    guard case let .first(keyPath) = index else {
+      XCTFail("the function should be 'first'")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? Double)
+    XCTAssertEqual(keyPath, \Data.stocks)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, 35.0)
+  }
+
+  func testArrayElementKeyPathNotEqualPrimitive() throws {
+    let predicate = (\Data.relationships).first(\.count) != 5
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("relationships.last.count != 5 should result in a comparison")
+      return
+    }
+
+    guard
+      let keyPath = comparison
+        .expression
+        .as(ArrayElementKeyPath<KeyPath<Data, [Relationship]>, Int>.self)
+    else {
+      XCTFail("the left side of the comparison should be an array element key path")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? Int)
+    XCTAssertEqual(keyPath.type, .first)
+    XCTAssertEqual(keyPath.array, \Data.relationships)
+    XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, 5)
+  }
 
   // MARK: - >=
 
