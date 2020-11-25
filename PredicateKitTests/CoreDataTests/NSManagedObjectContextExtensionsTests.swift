@@ -26,7 +26,7 @@ import XCTest
 
 final class NSManagedObjectContextExtensionsTests: XCTestCase {
   private lazy var model = NSManagedObjectModel.mergedModel(
-    from: [Bundle.module]
+    from: [Bundle(for: NSManagedObjectContextExtensionsTests.self)]
   )!
 
   private var container: NSPersistentContainer!
