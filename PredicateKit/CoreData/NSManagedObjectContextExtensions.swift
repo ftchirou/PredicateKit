@@ -369,7 +369,7 @@ public struct FetchRequest<Entity: NSManagedObject> {
   public func count() throws -> Int {
     let request: NSFetchRequest<Entity> = requestBuilder.makeRequest(from: self)
     #if DEBUG
-    debugInspector?.inspect(request.copy() as! NSFetchRequest<NSDictionary>)
+    debugInspector?.inspect(request.copy() as! NSFetchRequest<Entity>)
     #endif
     return try context.count(for: request)
   }
