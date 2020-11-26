@@ -163,9 +163,9 @@ Instead of directly fetching results, you can use `fetchedResultsController()` t
 
 ```swift
 let controller: NSFetchedResultsController<Note> = managedObjectContext
-.fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
-.sorted(by: \Note.creationDate, .descending)
-.fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
+  .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
+  .sorted(by: \Note.creationDate, .descending)
+  .fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
 ```
 
 ## Counting objects
