@@ -14,11 +14,11 @@
 #  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Pod::Spec.new do |spec|
-  spec.name         = "PredicateKit"
-  spec.version      = "1.0.0"
-  spec.summary      = "Write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions."
-  spec.description  = <<-DESC
-                   PredicateKit allows Swift developers to write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions.
+  spec.name = "PredicateKit"
+  spec.version = "1.1.0"
+  spec.summary = "Write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions."
+  spec.description = <<-DESC
+  PredicateKit allows Swift developers to write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions.
                    DESC
   spec.homepage = "https://github.com/ftchirou/PredicateKit"
   spec.license = { :type => "MIT", :file => "LICENSE.md" }
