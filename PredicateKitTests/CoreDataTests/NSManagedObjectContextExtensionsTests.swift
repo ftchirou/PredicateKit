@@ -39,6 +39,10 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
   override func tearDown() {
     super.tearDown()
     container.viewContext.deleteAll(Note.self)
+    container.viewContext.deleteAll(User.self)
+    container.viewContext.deleteAll(UserAccount.self)
+    container.viewContext.deleteAll(Profile.self)
+    container.viewContext.deleteAll(BillingInfo.self)
     container = nil
   }
 
@@ -260,7 +264,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertEqual(notes.first?.numberOfViews, 3)
   }
 
-  func testFetchWithPredicateOnAirstArrayElement() throws {
+  func testFetchWithPredicateOnFirstArrayElement() throws {
     try container.viewContext.insertNotes(
       (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting", "casual"]),
       (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["casual", "greeting"])
@@ -585,11 +589,9 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
       .fetchedResultsController()
     
     try controller.performFetch()
-    let sectionCount = controller.sections?.count
-    let itemCount = controller.sections?.first?.numberOfObjects
-    
-    XCTAssertEqual(sectionCount, 1)
-    XCTAssertEqual(itemCount, 2)
+    XCTAssertNil(controller.sectionNameKeyPath)
+    XCTAssertEqual(controller.sections?.count, 1)
+    XCTAssertEqual(controller.sections?.first?.numberOfObjects, 2)
   }
   
   func testFetchedResultsControllerSections() throws {
@@ -610,14 +612,10 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     
     let sectionCount = controller.sections?.count
     XCTAssertEqual(sectionCount, 3)
-    
-    let itemCount0 = controller.sections?[0].numberOfObjects
-    let itemCount1 = controller.sections?[1].numberOfObjects
-    let itemCount2 = controller.sections?[2].numberOfObjects
-    
-    XCTAssertEqual(itemCount0, 1)
-    XCTAssertEqual(itemCount1, 2)
-    XCTAssertEqual(itemCount2, 1)
+    XCTAssertEqual(controller.sections?[0].numberOfObjects, 1)
+    XCTAssertEqual(controller.sections?[1].numberOfObjects, 2)
+    XCTAssertEqual(controller.sections?[2].numberOfObjects, 1)
+    XCTAssertEqual(controller.sectionNameKeyPath, "creationDate")
   }
 
   func testNSFetchRequestsAreForwardedToInspector() throws {

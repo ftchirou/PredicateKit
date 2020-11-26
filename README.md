@@ -16,6 +16,7 @@ comparisons and logical operators, literal values, and functions.
 - [Quick start](#quick-start)
   - [Fetching objects](#fetching-objects)
   - [Configuring the fetch](#configuring-the-fetch)
+  - [Fetching objects with an NSFetchedResultsController](#fetching-objects-with-an-nsfetchedresultscontroller)
   - [Counting objects](#counting-objects)
 - [Documentation](#documentation)
   - [Writing predicates](#writing-predicates)
@@ -135,19 +136,6 @@ let notes: [[String: Any]] = try managedObjectContext
   .result()
 ```
 
-### Fetching objects with an NSFetchedResultsController
-
-Instead of directly fetching results, you can use `fetchedResultsController()` to instantiate an NSFetchedResultsController with the configured fetch. `fetchedResultsController` has two optional parameters: `sectionNameKeyPath` is a KeyPath on the returned objects used to compute section info and `cacheName` is the name of a file to store pre-computed section info.
-
-###### Example
-
-```swift
-let controller: NSFetchedResultsController<Note> = managedObjectContext
-  .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
-  .sorted(by: \Note.creationDate, .descending)
-  .fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
-```
-
 ## Configuring the fetch
 
 `fetch(where:)` returns an object of type `FetchRequest`. You can apply a series of modifiers on this object to further configure how the objects should be matched and returned.
@@ -166,6 +154,19 @@ let notes: [Note] = try managedObjectContext
 ```
 
 See [Request modifiers](#request-modifiers) for more about modifiers.
+
+## Fetching objects with an NSFetchedResultsController
+
+Instead of directly fetching results, you can use `fetchedResultsController()` to instantiate an `NSFetchedResultsController` with the configured fetch. `fetchedResultsController` has two optional parameters: `sectionNameKeyPath` is a [key-path](https://developer.apple.com/documentation/swift/keypath) on the returned objects used to compute section info and `cacheName` is the name of a file to store pre-computed section info.
+
+###### Example
+
+```swift
+let controller: NSFetchedResultsController<Note> = managedObjectContext
+.fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
+.sorted(by: \Note.creationDate, .descending)
+.fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
+```
 
 ## Counting objects
 

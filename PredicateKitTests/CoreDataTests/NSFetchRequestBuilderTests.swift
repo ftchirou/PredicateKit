@@ -31,9 +31,9 @@ final class NSFetchRequestBuilderTests: XCTestCase {
   func testLessThanPredicate() throws {
     let request = makeRequest(\Data.count < 42)
     let builder = makeRequestBuilder()
-    
+
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
-    
+
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "count"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: 42))
@@ -50,13 +50,13 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.predicateFormat, NSPredicate(format: "relationships[FIRST].count <[c] 42").predicateFormat)
   }
-  
+
   func testLessThanOrEqualPredicate() throws {
     let request = makeRequest(\Data.count <= 42)
     let builder = makeRequestBuilder()
-    
+
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
-    
+
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "count"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: 42))
@@ -96,7 +96,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.predicateFormat, NSPredicate(format: "relationships[LAST].count ==[c] 42").predicateFormat)
   }
-  
+
   func testNotEqualPredicate() throws {
     let request = makeRequest(\Data.text != "Hello, World!")
     let builder = makeRequestBuilder()
@@ -109,7 +109,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.predicateOperatorType, .notEqualTo)
     XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
   }
-  
+
   func testArrayElementNotEqualPredicate() throws {
     let request = makeRequest((\Data.relationships).last(\.count) != 42)
     let builder = makeRequestBuilder()
@@ -119,7 +119,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.predicateFormat, NSPredicate(format: "relationships[LAST].count !=[c] 42").predicateFormat)
   }
-  
+
   func testGreaterThanOrEqualPredicate() throws {
     let request = makeRequest(\Data.count >= 42)
     let builder = makeRequestBuilder()
@@ -142,7 +142,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.predicateFormat, NSPredicate(format: "relationships[3].count >=[c] 42").predicateFormat)
   }
-  
+
   func testGreaterThanPredicate() throws {
     let request = makeRequest(\Data.count > 42)
     let builder = makeRequestBuilder()
