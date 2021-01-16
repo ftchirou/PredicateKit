@@ -16,8 +16,8 @@ comparisons and logical operators, literal values, and functions.
 - [Quick start](#quick-start)
   - [Fetching objects](#fetching-objects)
   - [Configuring the fetch](#configuring-the-fetch)
-  - [Fetching objects with an NSFetchedResultsController](#fetching-objects-with-an-nsfetchedresultscontroller)
   - [Fetching objects with the @FetchRequest property wrapper](#fetching-objects-with-the-fetchrequest-property-wrapper)
+  - [Fetching objects with an NSFetchedResultsController](#fetching-objects-with-an-nsfetchedresultscontroller)
   - [Counting objects](#counting-objects)
 - [Documentation](#documentation)
   - [Writing predicates](#writing-predicates)
@@ -205,7 +205,7 @@ struct ContentView: View {
 }
 ```
 
-Both initializers accept an optional parameter `animation` that will be used to animate changes in the fetched results.
+Both initializers accept an optional parameter [`animation`](https://developer.apple.com/documentation/swiftui/animation) that will be used to animate changes in the fetched results.
 
 ###### Example
 
@@ -215,7 +215,10 @@ import SwiftUI
 
 struct ContentView: View {
 
-  @SwiftUI.FetchRequest(predicate: (\Note.text).contains("Hello, World!"), animation: .easeInOut)
+  @SwiftUI.FetchRequest(
+    predicate: (\Note.text).contains("Hello, World!"),
+    animation: .easeInOut
+  )
   var notes: FetchedResults<Note>
 
   var body: some View {
