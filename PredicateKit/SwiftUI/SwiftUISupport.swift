@@ -128,6 +128,9 @@ extension FetchRequest {
   ///      }
   ///
   public init(predicate: Predicate<Entity>) {
+    // It's okay to provide this "default" context. It will not be used; instead SwiftUI will
+    // use the context injected in the environment of the view to execute the created
+    // fetch request.
     let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     self.init(context: context, predicate: predicate)
   }
