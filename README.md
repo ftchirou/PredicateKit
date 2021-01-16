@@ -231,7 +231,10 @@ struct ContentView: View {
 
 ## Fetching objects with an NSFetchedResultsController
 
-In UIKit, you can use `fetchedResultsController()` to create an `NSFetchedResultsController` from a configured fetch request. `fetchedResultsController` has two optional parameters: `sectionNameKeyPath` is a [key-path](https://developer.apple.com/documentation/swift/keypath) on the returned objects used to compute section info and `cacheName` is the name of a file to store pre-computed section info.
+In UIKit, you can use `fetchedResultsController()` to create an `NSFetchedResultsController` from a configured fetch request. `fetchedResultsController` has two optional parameters: 
+
+- `sectionNameKeyPath` is a [key-path](https://developer.apple.com/documentation/swift/keypath) on the returned objects used to compute section info
+- `cacheName` is the name of a file to store pre-computed section info.
 
 ###### Example
 
