@@ -21,7 +21,7 @@
 import CoreData
 import SwiftUI
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 extension SwiftUI.FetchRequest where Result: NSManagedObject {
   /// Creates an instance by defining a fetch request based on the provided predicate and animation.
   ///
@@ -100,7 +100,7 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
   }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 extension FetchRequest {
   /// Creates a fetch request using the provided predicate.
   ///

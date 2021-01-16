@@ -29,7 +29,7 @@ import XCTest
 // view's graph. We don't really test here that our `Predicate`s and `FetchRequest`s are properly converted to
 // `NSPredicate`s and `NSFetchRequest`s; we rely on the tests in `NSFetchRequestBuilderTests` and assume the conversion
 // correctness. Here, we just want to ensure that the view's graph will contain the expected `NSFetchRequest`.
-@available(iOS 13.0, *)
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 class SwiftUISupportTests: XCTestCase {
   func testFetchRequestPropertyWrapperWithBasicPredicate() throws {
     struct ContentView: View {
@@ -191,7 +191,7 @@ private extension Date {
   static let now = Date()
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 private extension Transaction {
   static var nonContinuousEaseInOut: Transaction = {
     var transaction = Transaction(animation: .easeInOut)
