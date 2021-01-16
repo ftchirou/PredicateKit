@@ -23,6 +23,8 @@
 		320347252549A66E00F9661B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 320347242549A66E00F9661B /* README.md */; };
 		3203472D254C952600F9661B /* NSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3203472C254C952500F9661B /* NSFetchRequestInspector.swift */; };
 		32034735254CC05300F9661B /* MockNSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */; };
+		32C8F72325B22CBE00903E22 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */; };
+		32C8F75525B248C700903E22 /* SwiftUISupportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		320347242549A66E00F9661B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3203472C254C952500F9661B /* NSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSFetchRequestInspector.swift; sourceTree = "<group>"; };
 		32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNSFetchRequestInspector.swift; sourceTree = "<group>"; };
+		32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
+		32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				320346842546B62A00F9661B /* CoreData */,
+				32C8F72125B22C9D00903E22 /* SwiftUI */,
 				320347122548EE4B00F9661B /* Functions.swift */,
 				320346602546AA5400F9661B /* Info.plist */,
 				3203467C2546AB9A00F9661B /* Primitive.swift */,
@@ -113,6 +118,7 @@
 			children = (
 				320346EE25470EA200F9661B /* CoreDataTests */,
 				329BCA602550DB220089D8B6 /* Resources */,
+				32C8F75325B248B400903E22 /* SwiftUITests */,
 				3203466C2546AA5400F9661B /* Info.plist */,
 				320346E825470CA700F9661B /* OperatorTests.swift */,
 				320346E02547073A00F9661B /* PrimitiveTests.swift */,
@@ -155,6 +161,22 @@
 				3203470D2548C54200F9661B /* DataModel.xcdatamodeld */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		32C8F72125B22C9D00903E22 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		32C8F75325B248B400903E22 /* SwiftUITests */ = {
+			isa = PBXGroup;
+			children = (
+				32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */,
+			);
+			path = SwiftUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				320346862546B70000F9661B /* NSManagedObjectContextExtensions.swift in Sources */,
+				32C8F72325B22CBE00903E22 /* SwiftUISupport.swift in Sources */,
 				3203470225483A8500F9661B /* NSFetchRequestBuilder.swift in Sources */,
 				3203472D254C952600F9661B /* NSFetchRequestInspector.swift in Sources */,
 				320346812546ABB900F9661B /* Predicate.swift in Sources */,
@@ -287,6 +310,7 @@
 				320346E925470CA700F9661B /* OperatorTests.swift in Sources */,
 				32034719254903B700F9661B /* XCTestCaseExtensions.swift in Sources */,
 				320346E12547073A00F9661B /* PrimitiveTests.swift in Sources */,
+				32C8F75525B248C700903E22 /* SwiftUISupportTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
