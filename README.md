@@ -16,6 +16,7 @@ comparisons and logical operators, literal values, and functions.
 - [Quick start](#quick-start)
   - [Fetching objects](#fetching-objects)
   - [Configuring the fetch](#configuring-the-fetch)
+  - [Fetching objects with the @FetchRequest property wrapper](#fetching-objects-with-the-fetchrequest-property-wrapper)
   - [Fetching objects with an NSFetchedResultsController](#fetching-objects-with-an-nsfetchedresultscontroller)
   - [Counting objects](#counting-objects)
 - [Documentation](#documentation)
@@ -155,9 +156,85 @@ let notes: [Note] = try managedObjectContext
 
 See [Request modifiers](#request-modifiers) for more about modifiers.
 
+## Fetching objects with the @FetchRequest property wrapper
+
+PredicateKit extends the SwiftUI [ `@FetchRequest`](https://developer.apple.com/documentation/swiftui/fetchrequest) property wrapper to support type-safe predicates. To use, simply initialize a `@FetchRequest` with a predicate.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+
+  @SwiftUI.FetchRequest(predicate: \Note.text == "Hello, World!")
+  var notes: FetchedResults<Note>
+
+  var body: some View {
+    List(notes, id: \.self) {
+      Text($0.text)
+    }
+  }
+}
+```
+
+You can also initialize a `@FetchRequest` with a full-fledged request with modifiers and sort descriptors.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+
+  @SwiftUI.FetchRequest(
+    fetchRequest: FetchRequest(predicate: (\Note.text).contains("Hello, World!"))
+      .limit(50)
+      .offset(100)
+      .sorted(by: \.Note.creationDate)
+  )
+  var notes: FetchedResults<Note>
+
+  var body: some View {
+    List(notes, id: \.self) {
+      Text($0.text)
+    }
+  }
+}
+```
+
+Both initializers accept an optional parameter [`animation`](https://developer.apple.com/documentation/swiftui/animation) that will be used to animate changes in the fetched results.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+
+  @SwiftUI.FetchRequest(
+    predicate: (\Note.text).contains("Hello, World!"),
+    animation: .easeInOut
+  )
+  var notes: FetchedResults<Note>
+
+  var body: some View {
+    List(notes, id: \.self) {
+      Text($0.text)
+    }
+  }
+}
+```
+
 ## Fetching objects with an NSFetchedResultsController
 
-Instead of directly fetching results, you can use `fetchedResultsController()` to instantiate an `NSFetchedResultsController` with the configured fetch. `fetchedResultsController` has two optional parameters: `sectionNameKeyPath` is a [key-path](https://developer.apple.com/documentation/swift/keypath) on the returned objects used to compute section info and `cacheName` is the name of a file to store pre-computed section info.
+In UIKit, you can use `fetchedResultsController()` to create an `NSFetchedResultsController` from a configured fetch request. `fetchedResultsController` has two optional parameters: 
+
+- `sectionNameKeyPath` is a [key-path](https://developer.apple.com/documentation/swift/keypath) on the returned objects used to compute section info
+- `cacheName` is the name of a file to store pre-computed section info.
 
 ###### Example
 

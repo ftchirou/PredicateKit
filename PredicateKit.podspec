@@ -15,7 +15,7 @@
 
 Pod::Spec.new do |spec|
   spec.name = "PredicateKit"
-  spec.version = "1.1.0"
+  spec.version = "1.2.0"
   spec.summary = "Write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions."
   spec.description = <<-DESC
   PredicateKit allows Swift developers to write expressive and type-safe predicates for CoreData using key-paths, comparisons and logical operators, literal values, and functions.
