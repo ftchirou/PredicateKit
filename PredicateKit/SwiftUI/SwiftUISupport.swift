@@ -56,7 +56,7 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
   ///         fetchRequest: FetchRequest(predicate: (\Note.text).contains("Hello, World!"))
   ///           .limit(50)
   ///           .offset(100)
-  ///           .sorted(by: \.Note.creationDate)
+  ///           .sorted(by: \Note.creationDate)
   ///       )
   ///       var notes: FetchedResults<Note>
   ///
