@@ -28,6 +28,18 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
   /// - Parameter predicate: The predicate used to define a filter for the fetched results.
   /// - Parameter animation: The animation used for any changes to the fetched results.
   ///
+  /// ## Example
+  ///
+  ///     struct ContentView: View {
+  ///       @SwiftUI.FetchRequest(predicate: \Note.text == "Hello, World!")
+  ///       var notes: FetchedResults<Note>
+  ///
+  ///       var body: some View {
+  ///         List(notes, id: \.self) {
+  ///           Text($0.text)
+  ///         }
+  ///       }
+  ///
   public init(predicate: Predicate<Result>, animation: Animation? = nil) {
     self.init(fetchRequest: FetchRequest(predicate: predicate), animation: animation)
   }
@@ -36,6 +48,23 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
   ///
   /// - Parameter fetchRequest: The request used to produce the fetched results.
   /// - Parameter animation: The animation used for any changes to the fetched results.
+  ///
+  /// ## Example
+  ///
+  ///     struct ContentView: View {
+  ///       @SwiftUI.FetchRequest(
+  ///         fetchRequest: FetchRequest(predicate: (\Note.text).contains("Hello, World!"))
+  ///           .limit(50)
+  ///           .offset(100)
+  ///           .sorted(by: \.Note.creationDate)
+  ///       )
+  ///       var notes: FetchedResults<Note>
+  ///
+  ///       var body: some View {
+  ///         List(notes, id: \.self) {
+  ///           Text($0.text)
+  ///         }
+  ///       }
   ///
   public init(fetchRequest: FetchRequest<Result>, animation: Animation? = nil) {
     let entityName = Result.entity().name ?? String(describing: Result.self)
@@ -48,6 +77,22 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
   /// - Parameter fetchRequest: The request used to produce the fetched results.
   /// - Parameter transaction: The transaction used for any changes to the fetched results.
   ///
+  /// ## Example
+  ///
+  ///      struct ContentView: View {
+  ///        @SwiftUI.FetchRequest(
+  ///          fetchRequest: FetchRequest(predicate: \Note.text == "Hello, World!")),
+  ///          transaction: Transaction(animation: .easeIn)
+  ///        )
+  ///        var notes: FetchedResults<Note>
+  ///
+  ///        var body: some View {
+  ///          List(notes, id: \.self) {
+  ///            Text($0.text)
+  ///          }
+  ///        }
+  ///      }
+  ///
   public init(fetchRequest: FetchRequest<Result>, transaction: Transaction) {
     let entityName = Result.entity().name ?? String(describing: Result.self)
     let fetchRequestBuilder = NSFetchRequestBuilder(entityName: entityName)
@@ -59,9 +104,28 @@ extension SwiftUI.FetchRequest where Result: NSManagedObject {
 extension FetchRequest {
   /// Creates a fetch request using the provided predicate.
   ///
+  /// - Parameter predicate: The predicate used to define a filter for the fetched results.
+  ///
   /// - Important: Use this initializer **only** in conjunction with the SwiftUI property wrapper` @FetchRequest`. Fetch
   ///   requests created with this initializer cannot be executed outside of SwiftUI as they rely on the CoreData
   ///   managed object context injected in the environment of a SwiftUI view.
+  ///
+  /// ## Example
+  ///
+  ///       struct ContentView: View {
+  ///        @SwiftUI.FetchRequest(
+  ///          fetchRequest: FetchRequest(predicate: (\Note.text).contains("Hello, World!"))
+  ///            .sorted(by: \Note.creationDate, .ascending)
+  ///            .limit(100)
+  ///        )
+  ///        var notes: FetchedResults<Note>
+  ///
+  ///        var body: some View {
+  ///          List(notes, id: \.self) {
+  ///            Text($0.text)
+  ///          }
+  ///        }
+  ///      }
   ///
   public init(predicate: Predicate<Entity>) {
     let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
