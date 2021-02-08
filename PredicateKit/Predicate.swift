@@ -620,6 +620,7 @@ extension NSSet: AnyArrayOrSet {
 }
 
 extension Optional: AnyArrayOrSet where Wrapped: AnyArrayOrSet {
+  public typealias Element = Wrapped.Element
 }
 
 public protocol AnyArray {
@@ -633,17 +634,19 @@ extension Array: AnyArray {
 }
 
 public protocol PrimitiveCollection {
-  associatedtype Element: Primitive
+  associatedtype PrimitiveElement: Primitive
 }
 
 extension Array: PrimitiveCollection where Element: Primitive {
+  public typealias PrimitiveElement = Element
 }
 
 extension Set: PrimitiveCollection where Element: Primitive {
+  public typealias PrimitiveElement = Element
 }
 
 extension Optional: PrimitiveCollection where Wrapped: PrimitiveCollection {
-  public typealias Element = Wrapped.Element
+  public typealias PrimitiveElement = Wrapped.PrimitiveElement
 }
 
 public protocol AdditiveCollection {
