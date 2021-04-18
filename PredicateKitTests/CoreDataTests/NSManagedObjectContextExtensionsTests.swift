@@ -629,6 +629,40 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertTrue(inspector.inspectCalled)
   }
 
+  func testFetchWithNilEquality() throws {
+    let now = Date()
+
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: .distantFuture, updateDate: now, numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: .distantPast, updateDate: nil, numberOfViews: 3, tags: ["greeting"])
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.updateDate == nil)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Goodbye!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 3)
+  }
+
+  func testFetchWithArrayNilEqualityNilEquality() throws {
+    try container.viewContext.insertUsers(
+      (name: "John Doe", billingAccountType: "Pro", purchases: [35.0, 120.0]),
+      (name: "Jane Doe", billingAccountType: "Default", purchases: nil)
+    )
+
+    let users: [User] = try container.viewContext
+      .fetch(where: \User.billingInfo.purchases == nil)
+      .inspect(on: MockNSFetchRequestInspector())
+      .result()
+
+    XCTAssertEqual(users.count, 1)
+    XCTAssertEqual(users.first?.name, "Jane Doe")
+    XCTAssertEqual(users.first?.billingInfo.accountType, "Default")
+  }
+
   private func makePersistentContainer() -> NSPersistentContainer {
     return self.makePersistentContainer(with: model)
   }
@@ -639,6 +673,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
 class Note: NSManagedObject {
   @NSManaged var text: String
   @NSManaged var creationDate: Date
+  @NSManaged var updateDate: Date?
   @NSManaged var numberOfViews: Int
   @NSManaged var tags: [String]
 }
@@ -654,7 +689,7 @@ class User: NSManagedObject {
 
 class BillingInfo: NSManagedObject {
   @NSManaged var accountType: String
-  @NSManaged var purchases: [Double]
+  @NSManaged var purchases: [Double]?
 }
 
 class UserAccount: NSManagedObject {
@@ -703,6 +738,21 @@ private extension NSManagedObjectContext {
     try save()
   }
 
+  func insertNotes(
+    _ notes: (text: String, creationDate: Date, updateDate: Date?, numberOfViews: Int, tags: [String])...
+  ) throws {
+    for description in notes {
+      let note = NSEntityDescription.insertNewObject(forEntityName: "Note", into: self) as! Note
+      note.text = description.text
+      note.tags = description.tags
+      note.numberOfViews = description.numberOfViews
+      note.creationDate = description.creationDate
+      note.updateDate = description.updateDate
+    }
+
+    try save()
+  }
+
   func insertAccounts(purchases: [[Double]]) throws {
     for description in purchases {
       let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: self) as! Account
@@ -712,7 +762,7 @@ private extension NSManagedObjectContext {
     try save()
   }
 
-  func insertUsers(_ users: (name: String, billingAccountType: String, purchases: [Double])...) throws {
+  func insertUsers(_ users: (name: String, billingAccountType: String, purchases: [Double]?)...) throws {
     for description in users {
       let user = NSEntityDescription.insertNewObject(forEntityName: "User", into: self) as! User
       user.name = description.name

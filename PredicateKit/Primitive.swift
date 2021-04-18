@@ -20,6 +20,8 @@
 
 import Foundation
 
+// MARK: - Primitive
+
 public protocol Primitive {
   static var type: Type { get }
 }
@@ -45,6 +47,7 @@ public indirect enum Type: Equatable {
   case data
   case wrapped(Type)
   case array(Type)
+  case `nil`
 }
 
 extension Bool: Primitive {
@@ -129,6 +132,22 @@ extension Data: Primitive {
 
 extension Optional: Primitive where Wrapped: Primitive {
   public static var type: Type { Wrapped.type }
+}
+
+public struct Nil: Primitive, ExpressibleByNilLiteral {
+  public static var type: Type { .nil }
+
+  public init(nilLiteral: ()) {
+  }
+}
+
+// MARK: - Optional
+
+public protocol OptionalType {
+  associatedtype Wrapped
+}
+
+extension Optional: OptionalType {
 }
 
 extension Optional: Comparable where Wrapped: Comparable {

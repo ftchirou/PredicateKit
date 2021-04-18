@@ -1039,6 +1039,45 @@ final class NSFetchRequestBuilderTests: XCTestCase {
 
     XCTAssertTrue(fatalError.contains("does not conform to NSExpressionConvertible"))
   }
+
+  func testObjectNilEqualityPredicate() throws {
+    let request = makeRequest(\Data.optionalRelationship == nil)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "optionalRelationship"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: NSNull()))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testArrayNilEqualityPredicate() throws {
+    let request = makeRequest(\Data.optionalRelationships == nil)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "optionalRelationships"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: NSNull()))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testNestedPrimitiveNilEqualityPredicate() throws {
+    let request = makeRequest(\Data.optionalRelationship?.text == nil)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "optionalRelationship.text"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: NSNull()))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
 }
 
 // MARK: -
@@ -1051,6 +1090,8 @@ private class Data: NSManagedObject {
   @NSManaged var creationDate: Date
   @NSManaged var relationship: Relationship
   @NSManaged var relationships: [Relationship]
+  @NSManaged var optionalRelationship: Relationship?
+  @NSManaged var optionalRelationships: [Relationship]?
 }
 
 private class Relationship: NSManagedObject {
@@ -1078,4 +1119,13 @@ private func makeRequestBuilder(
   comparisonOptions: NSComparisonPredicate.Options = .caseInsensitive
 ) -> NSFetchRequestBuilder {
   .init(entityName: "")
+}
+
+class NoteGroup: NSManagedObject {
+  @NSManaged var notes: [NewNote]?
+}
+
+class NewNote: NSManagedObject {
+  @NSManaged var group: NoteGroup?
+  @NSManaged var id: String?
 }

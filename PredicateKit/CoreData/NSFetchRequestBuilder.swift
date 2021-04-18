@@ -73,7 +73,7 @@ struct NSFetchRequestBuilder {
       case .direct, .any, .all:
         return NSComparisonPredicate(
           leftExpression: makeExpression(from: comparison.expression),
-          rightExpression: NSExpression(forConstantValue: comparison.value),
+          rightExpression: makeExpression(from: comparison.value),
           modifier: makeComparisonModifier(from: comparison.modifier),
           type: makeOperator(from: comparison.operator),
           options: makeComparisonOptions(from: comparison.options)
@@ -108,6 +108,10 @@ struct NSFetchRequestBuilder {
 
   private func makeExpression(from expression: AnyExpression) -> NSExpression {
     expression.toNSExpression(conversionOptions)
+  }
+
+  private func makeExpression(from primitive: Primitive) -> NSExpression {
+    return NSExpression(forConstantValue: primitive.value)
   }
 
   private func makeOperator(from operator: ComparisonOperator) -> NSComparisonPredicate.Operator {
@@ -295,6 +299,19 @@ extension Query: NSExpressionConvertible {
       usingIteratorVariable: "x",
       predicate: builder.makePredicate(from: predicate)
     )
+  }
+}
+
+// MARK: - Primitive
+
+private extension Primitive {
+  var value: Any? {
+    switch Self.type {
+    case .nil:
+      return NSNull()
+    default:
+      return self
+    }
   }
 }
 

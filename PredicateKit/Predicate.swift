@@ -290,7 +290,7 @@ public enum Function<Input: Expression, Output>: Expression where Input.Value: A
 
 public enum Index<Array: Expression>: Expression where Array.Value: AnyArray {
   public typealias Root = Array.Root
-  public typealias Value = Array.Value.Element
+  public typealias Value = Array.Value.ArrayElement
 
   case index(Array, Int)
   case first(Array)
@@ -368,6 +368,11 @@ public func <= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Pr
 }
 
 public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
+  .comparison(.init(lhs, .equal, rhs))
+}
+
+@_disfavoredOverload
+public func == <E: Expression> (lhs: E, rhs: Nil) -> Predicate<E.Root> where E.Value: OptionalType {
   .comparison(.init(lhs, .equal, rhs))
 }
 
@@ -495,15 +500,15 @@ extension Expression where Value: AnyArray {
     .last(self)
   }
 
-  public func at<T>(index: Int, _ keyPath: KeyPath<Value.Element, T>) -> ArrayElementKeyPath<Self, T> {
+  public func at<T>(index: Int, _ keyPath: KeyPath<Value.ArrayElement, T>) -> ArrayElementKeyPath<Self, T> {
     .init(.index(index), self, keyPath)
   }
 
-  public func first<T>(_ keyPath: KeyPath<Value.Element, T>) -> ArrayElementKeyPath<Self, T> {
+  public func first<T>(_ keyPath: KeyPath<Value.ArrayElement, T>) -> ArrayElementKeyPath<Self, T> {
     .init(.first, self, keyPath)
   }
 
-  public func last<T>(_ keyPath: KeyPath<Value.Element, T>) -> ArrayElementKeyPath<Self, T> {
+  public func last<T>(_ keyPath: KeyPath<Value.ArrayElement, T>) -> ArrayElementKeyPath<Self, T> {
     .init(.last, self, keyPath)
   }
 }
@@ -600,6 +605,8 @@ extension Expression {
 
 // MARK: - Supporting Protocols
 
+// MARK: - StringValue
+
 public protocol StringValue {
 }
 
@@ -609,8 +616,13 @@ extension String: StringValue {
 extension Optional: StringValue where Wrapped == String {
 }
 
+// MARK: - AnyArrayOrSet
+
 public protocol AnyArrayOrSet {
   associatedtype Element
+}
+
+extension Array: AnyArrayOrSet {
 }
 
 extension Set: AnyArrayOrSet {
@@ -623,15 +635,21 @@ extension Optional: AnyArrayOrSet where Wrapped: AnyArrayOrSet {
   public typealias Element = Wrapped.Element
 }
 
-public protocol AnyArray {
-  associatedtype Element
-}
+// MARK: - AnyArray
 
-extension Array: AnyArrayOrSet {
+public protocol AnyArray {
+  associatedtype ArrayElement
 }
 
 extension Array: AnyArray {
+  public typealias ArrayElement = Element
 }
+
+extension Optional: AnyArray where Wrapped: AnyArray {
+  public typealias ArrayElement = Wrapped.ArrayElement
+}
+
+// MARK: - PrimitiveCollection
 
 public protocol PrimitiveCollection {
   associatedtype PrimitiveElement: Primitive
@@ -649,6 +667,8 @@ extension Optional: PrimitiveCollection where Wrapped: PrimitiveCollection {
   public typealias PrimitiveElement = Wrapped.PrimitiveElement
 }
 
+// MARK: - AdditiveCollection
+
 public protocol AdditiveCollection {
   associatedtype AdditiveElement: AdditiveArithmetic & Primitive
 }
@@ -660,6 +680,8 @@ extension Array: AdditiveCollection where Element: AdditiveArithmetic & Primitiv
 extension Optional: AdditiveCollection where Wrapped: PrimitiveCollection & AdditiveCollection {
   public typealias AdditiveElement = Wrapped.AdditiveElement
 }
+
+// MARK: - ComparableCollection
 
 public protocol ComparableCollection {
   associatedtype ComparableElement: Comparable & Primitive
@@ -673,7 +695,7 @@ extension Optional: ComparableCollection where Wrapped: ComparableCollection {
   public typealias ComparableElement = Wrapped.ComparableElement
 }
 
-// MARK: -
+// MARK: - Private Initializers
 
 extension Comparison {
   fileprivate init<E: Expression>(

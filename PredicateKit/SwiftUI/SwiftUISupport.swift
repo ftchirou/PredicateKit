@@ -135,3 +135,32 @@ extension FetchRequest {
     self.init(context: context, predicate: predicate)
   }
 }
+
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+extension FetchRequest {
+  /// Creates a fetch request that returns all objects in the underlying store.
+  ///
+  /// - Important: Use this initializer **only** in conjunction with the SwiftUI property wrapper` @FetchRequest`. Fetch
+  ///   requests created with this initializer cannot be executed outside of SwiftUI as they rely on the CoreData
+  ///   managed object context injected in the environment of a SwiftUI view.
+  ///
+  /// ## Example
+  ///
+  ///       struct ContentView: View {
+  ///        @SwiftUI.FetchRequest()
+  ///            .sorted(by: \Note.creationDate, .ascending)
+  ///            .limit(100)
+  ///        )
+  ///        var notes: FetchedResults<Note>
+  ///
+  ///        var body: some View {
+  ///          List(notes, id: \.self) {
+  ///            Text($0.text)
+  ///          }
+  ///        }
+  ///      }
+  ///
+  public init() {
+    self.init(predicate: true)
+  }
+}

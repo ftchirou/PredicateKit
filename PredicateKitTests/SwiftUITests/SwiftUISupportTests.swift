@@ -179,6 +179,29 @@ class SwiftUISupportTests: XCTestCase {
     XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
     XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
   }
+
+  func testFetchRequestPropertyWrapperWithNoPredicate() throws {
+    struct ContentView: View {
+      @SwiftUI.FetchRequest(
+        fetchRequest: FetchRequest()
+          .sorted(by: \.text, .ascending)
+      )
+      var notes: FetchedResults<Note>
+
+      var body: some View {
+        List(notes, id: \.self) {
+          Text($0.text)
+        }
+      }
+    }
+
+    let view = ContentView().environment(\.managedObjectContext, .default)
+    let request = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+    )
+
+    XCTAssertEqual(request.predicate, NSPredicate(value: true))
+  }
 }
 
 // MARK: -

@@ -236,6 +236,42 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, 42)
   }
 
+  func testOptionalKeyPathEqualToNil() throws {
+    let predicate: Predicate<Data> = \Data.optionalRelationship == nil
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("optionalRelationship == nil should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Relationship?>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    XCTAssertEqual(keyPath, \Data.optionalRelationship)
+    XCTAssertEqual(comparison.operator, .equal)
+    XCTAssertNotNil(comparison.value as? Nil)
+  }
+
+  func testOptionalArrayKeyPathEqualToNil() throws {
+    let predicate: Predicate<Data> = \Data.optionalRelationships == nil
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("optionalRelationships == nil should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, [Relationship]?>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    XCTAssertEqual(keyPath, \Data.optionalRelationships)
+    XCTAssertEqual(comparison.operator, .equal)
+    XCTAssertNotNil(comparison.value as? Nil)
+  }
+
   func testFunctionEqualPrimitive() throws {
     let predicate = (\Data.tags).count == 20
 
@@ -2116,6 +2152,8 @@ private struct Data {
   let stocks: [Double]
   let relationships: [Relationship]
   let creationDate: Date
+  let optionalRelationship: Relationship?
+  let optionalRelationships: [Relationship]?
 }
 
 private struct Relationship {
