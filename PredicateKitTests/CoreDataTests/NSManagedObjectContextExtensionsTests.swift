@@ -655,7 +655,6 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
 
     let users: [User] = try container.viewContext
       .fetch(where: \User.billingInfo.purchases == nil)
-      .inspect(on: MockNSFetchRequestInspector())
       .result()
 
     XCTAssertEqual(users.count, 1)

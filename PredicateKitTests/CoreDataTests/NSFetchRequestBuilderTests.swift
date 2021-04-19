@@ -1120,12 +1120,3 @@ private func makeRequestBuilder(
 ) -> NSFetchRequestBuilder {
   .init(entityName: "")
 }
-
-class NoteGroup: NSManagedObject {
-  @NSManaged var notes: [NewNote]?
-}
-
-class NewNote: NSManagedObject {
-  @NSManaged var group: NoteGroup?
-  @NSManaged var id: String?
-}
