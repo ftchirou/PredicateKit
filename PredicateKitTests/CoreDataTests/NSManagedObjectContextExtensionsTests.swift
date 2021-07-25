@@ -236,7 +236,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
 
     let notes: [Note] = try container.viewContext
       .fetch(where: (\Note.text).contains("Hello") || \Note.creationDate < Date())
-      .sorted(by: \.text, .descending)
+      .sorted(by: .init(\.text, order: .reverse))
       .result()
 
     XCTAssertEqual(notes.count, 2)
@@ -605,7 +605,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     
     let controller = container.viewContext
       .fetchAll()
-      .sorted(by: \Note.creationDate)
+      .sorted(by: .init(\Note.creationDate))
       .fetchedResultsController(sectionNameKeyPath: \Note.creationDate)
     
     try controller.performFetch()

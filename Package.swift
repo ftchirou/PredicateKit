@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 //
 //  Copyright 2020 Faiçal Tchirou
 //
@@ -20,7 +20,7 @@ import PackageDescription
 
 let package = Package(
   name: "PredicateKit",
-  platforms: [.macOS(.v10_15), .iOS(.v11), .tvOS(.v11), .watchOS(.v5)],
+  platforms: [.macOS(.v12), .iOS(.v15), .tvOS(.v15), .watchOS(.v8)],
   products: [.library(name: "PredicateKit", targets: ["PredicateKit"])],
   targets: [
     .target(
@@ -28,6 +28,7 @@ let package = Package(
       path: "PredicateKit",
       exclude: ["Info.plist"]
     ),
+    .testTarget(name: "PredicateKitTest", path: "PredicateKitTests", exclude: ["Info.plist"], resources: [.copy("Resources")])
   ],
   swiftLanguageVersions: [.v5]
 )

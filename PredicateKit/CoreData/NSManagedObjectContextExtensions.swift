@@ -116,30 +116,9 @@ extension NSManagedObjectContext {
 ///  [NSFetchRequest](https://developer.apple.com/documentation/coredata/nsfetchrequest)
 ///
 public struct FetchRequest<Entity: NSManagedObject> {
-  /// Represents a sorting criterion that determines how objects of type `T` should be sorted.
-  public struct SortCriterion<T> {
-    /// A custom comparator for objects of type `T`.
-    public typealias Comparator = (T, T) -> ComparisonResult
-
-    public enum Order {
-      case ascending
-      case descending
-    }
-
-    let property: PartialKeyPath<T>
-    let order: Order
-    let comparator: Comparator?
-
-    init(property: PartialKeyPath<T>, order: Order = .ascending, comparator: Comparator? = nil) {
-      self.property = property
-      self.order = order
-      self.comparator = comparator
-    }
-  }
-
   private let context: NSManagedObjectContext
   private(set) var predicate: Predicate<Entity>
-  private(set) var sortCriteria: [SortCriterion<Entity>] = []
+  private(set) var sortCriteria: [SortDescriptor<Entity>] = []
   private(set) var limit: Int?
   private(set) var offset: Int?
   private(set) var batchSize: Int?
@@ -288,17 +267,19 @@ public struct FetchRequest<Entity: NSManagedObject> {
   /// Specifies how the objects returned by the request should be sorted.
   ///
   /// - Parameters:
-  ///    - property: The key-path by which to sort the objects.
-  ///    - order: The order in which to sort the objects. Defaults to `.ascending`.
-  ///    - comparator: A custom comparator to use to sort the objects. If set to `nil`, the objects
-  ///      are compared with the default `<` opeator. Defaults to `nil`.
+  ///    - by: The SortDescriptor containing the KeyPath and SortOrder 
   ///
-  public func sorted<Value: Comparable & Primitive>(
-    by property: KeyPath<Entity, Value>,
-    _ order: SortCriterion<Entity>.Order = .ascending,
-    using comparator: SortCriterion<Entity>.Comparator? = nil
-  ) -> Self {
-    updating(\.sortCriteria, with: sortCriteria + [.init(property: property, order: order, comparator: comparator)])
+  public func sorted(by descriptor: SortDescriptor<Entity>) -> Self {
+    sorted(by: [descriptor])
+  }
+  
+  /// Specifies how the objects returned by the request should be sorted.
+  ///
+  /// - Parameters:
+  ///    - by: The SortDescriptor containing the KeyPath and SortOrder
+  ///
+  public func sorted(by descriptors: [SortDescriptor<Entity>]) -> Self {
+    updating(\.sortCriteria, with: sortCriteria + descriptors)
   }
 
   /// Specifies an object that can inspect the underlying `NSFetchRequest` objects in debug environments.

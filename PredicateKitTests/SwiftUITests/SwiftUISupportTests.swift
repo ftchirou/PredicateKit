@@ -59,8 +59,8 @@ class SwiftUISupportTests: XCTestCase {
     struct ContentView: View {
       @SwiftUI.FetchRequest(
         fetchRequest: FetchRequest(predicate: \Note.creationDate < .now)
-          .sorted(by: \.text, .ascending)
-          .sorted(by: \.creationDate, .descending)
+          .sorted(by: .init(\.text, order: .forward))
+          .sorted(by: .init(\.creationDate, order: .reverse))
       )
       var notes: FetchedResults<Note>
 
@@ -184,7 +184,7 @@ class SwiftUISupportTests: XCTestCase {
     struct ContentView: View {
       @SwiftUI.FetchRequest(
         fetchRequest: FetchRequest()
-          .sorted(by: \.text, .ascending)
+          .sorted(by: .init(\.text, order: .forward))
       )
       var notes: FetchedResults<Note>
 

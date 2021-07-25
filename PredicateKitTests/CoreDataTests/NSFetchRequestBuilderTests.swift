@@ -813,7 +813,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
 
   func testSortedByWithDefaultOrder() throws {
     let request = makeRequest((\Data.text).contains("world"))
-      .sorted(by: \.count)
+      .sorted(by: .init(\.count))
     let builder = makeRequestBuilder()
 
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -825,7 +825,7 @@ final class NSFetchRequestBuilderTests: XCTestCase {
 
   func testSortedByWithSpecificOrder() throws {
     let request = makeRequest((\Data.text).contains("world"))
-      .sorted(by: \.count, .descending)
+      .sorted(by: .init(\.count, order: .reverse))
     let builder = makeRequestBuilder()
 
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -837,8 +837,8 @@ final class NSFetchRequestBuilderTests: XCTestCase {
 
   func testMultipleSortedByModifiers() throws {
     let request = makeRequest((\Data.text).contains("world"))
-      .sorted(by: \.count, .descending)
-      .sorted(by: \.creationDate, .ascending)
+      .sorted(by: .init(\.count, order: .reverse))
+      .sorted(by: .init(\.creationDate))
     let builder = makeRequestBuilder()
 
     let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
@@ -848,40 +848,6 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertFalse(sortDescriptors.first?.ascending ?? true)
     XCTAssertEqual(sortDescriptors.last?.key, "creationDate")
     XCTAssertTrue(sortDescriptors.last?.ascending ?? false)
-  }
-
-  func testSortedByWithCustomComparator() throws {
-    let comparator: (Data, Data) -> ComparisonResult = { lhs, rhs in
-      return .orderedAscending
-    }
-
-    let request = makeRequest((\Data.text).contains("world"))
-      .sorted(by: \.count, using: comparator)
-    let builder = makeRequestBuilder()
-
-    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
-    let sortDescriptors = try XCTUnwrap(result.sortDescriptors)
-    XCTAssertEqual(sortDescriptors.count, 1)
-    XCTAssertEqual(sortDescriptors.first?.key, "count")
-    XCTAssertTrue(sortDescriptors.first?.ascending ?? false)
-    XCTAssertEqual(sortDescriptors.first?.comparator(Data(), Data()), .orderedAscending)
-  }
-
-  func testSortedByComparatorSortsByDefaultIfArgumentsAreNotOfTheRightType() throws {
-    let comparator: (Data, Data) -> ComparisonResult = { lhs, rhs in
-      return .orderedAscending
-    }
-
-    let request = makeRequest((\Data.text).contains("world"))
-      .sorted(by: \.count, using: comparator)
-    let builder = makeRequestBuilder()
-
-    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
-    let sortDescriptors = try XCTUnwrap(result.sortDescriptors)
-    XCTAssertEqual(sortDescriptors.count, 1)
-    XCTAssertEqual(sortDescriptors.first?.key, "count")
-    XCTAssertTrue(sortDescriptors.first?.ascending ?? false)
-    XCTAssertEqual(sortDescriptors.first?.comparator(21, 42), .default)
   }
 
   func testLimitModifier() throws {

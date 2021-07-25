@@ -163,25 +163,14 @@ struct NSFetchRequestBuilder {
     return comparisonOptions
   }
 
-  private func makeSortDescriptor<T>(from sortCriterion: FetchRequest<T>.SortCriterion<T>) -> NSSortDescriptor {
-    guard let comparator = sortCriterion.comparator else {
+  private func makeSortDescriptor<T>(from sortCriterion: SortDescriptor<T>) -> NSSortDescriptor {
+      let key = Mirror(reflecting: sortCriterion).children.first { (name, value) in name == "keyString" }!.value as! String
+      
       return NSSortDescriptor(
-        key: sortCriterion.property.stringValue,
-        ascending: sortCriterion.order == .ascending
+        key: key,
+        ascending: sortCriterion.order == .forward,
+        comparator: { sortCriterion.compare($0 as! T, $1 as! T) }
       )
-    }
-    
-    return NSSortDescriptor(
-      key: sortCriterion.property.stringValue,
-      ascending: sortCriterion.order == .ascending,
-      comparator: { lhs, rhs in
-        guard let lhs = lhs as? T, let rhs = rhs as? T else {
-          return .orderedDescending
-        }
-        
-        return comparator(lhs, rhs)
-      }
-    )
   }
 
   private func makeComparisonModifier(from modifier: ComparisonModifier) -> NSComparisonPredicate.Modifier {

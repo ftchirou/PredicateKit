@@ -164,3 +164,32 @@ extension FetchRequest {
     self.init(predicate: true)
   }
 }
+
+extension SwiftUI.FetchRequest where Result: NSManagedObject {
+    /// Creates a fetch request that returns the objects filtered by the given predicate and sorted by the given sortDescriptors.
+    ///
+    /// - Important: Use this initializer **only** in conjunction with the SwiftUI property wrapper` @FetchRequest`. Fetch
+    ///   requests created with this initializer cannot be executed outside of SwiftUI as they rely on the CoreData
+    ///   managed object context injected in the environment of a SwiftUI view.
+    ///
+    /// ## Example
+    ///
+    ///       struct ContentView: View {
+    ///        @SwiftUI.FetchRequest(
+    ///            sortDescriptors: [.init(\Note.creationDate)],
+    ///            predicate: (\Note.text).contains("Hello, World!")
+    ///        )
+    ///        var notes: FetchedResults<Note>
+    ///
+    ///        var body: some View {
+    ///          List(notes, id: \.self) {
+    ///            Text($0.text)
+    ///          }
+    ///        }
+    ///      }
+    ///
+    public init(sortDescriptors: [SortDescriptor<Result>], predicate: Predicate<Result>? = nil, animation: Animation? = nil) {
+        let request = FetchRequest<Result>(predicate: predicate ?? true)
+        self.init(fetchRequest: request.sorted(by: sortDescriptors), animation: animation)
+    }
+}
