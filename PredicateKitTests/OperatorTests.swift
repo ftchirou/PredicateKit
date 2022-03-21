@@ -1335,6 +1335,49 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(comparison.operator, .in)
     XCTAssertEqual(value, ["hello", "world", "welcome"])
   }
+    
+  func testKeyPathInArray() throws {
+    let predicate: Predicate<Data> = (\Data.text).in(["hello", "world", "welcome"])
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("text.in(['hello', 'world', 'welcome']) should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, String>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? [String])
+
+    XCTAssertEqual(keyPath, \Data.text)
+    XCTAssertEqual(comparison.operator, .in)
+    XCTAssertEqual(value, ["hello", "world", "welcome"])
+  }
+
+  func testKeyPathInSet() throws {
+    let predicate: Predicate<Data> = (\Data.text).in(Set(["hello", "world", "welcome"]))
+    
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("text.in(Set(['hello', 'world', 'welcome'])) should result in a comparison")
+      return
+    }
+    
+    guard let keyPath = comparison.expression.as(KeyPath<Data, String>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+    
+    let value = try XCTUnwrap(comparison.value as? [String])
+    
+    XCTAssertEqual(keyPath, \Data.text)
+    XCTAssertEqual(comparison.operator, .in)
+    XCTAssertTrue(value.contains("hello"), "searched item '\("hello")' is missing in comparison.value")
+    XCTAssertTrue(value.contains("world"), "searched item '\("world")' is missing in comparison.value")
+    XCTAssertTrue(value.contains("welcome"), "searched item '\("welcome")' is missing in comparison.value")
+    XCTAssertEqual(value.count, 3, "IN expression had \(3) items, found \(value.count)")
+  }
   
   func testKeyPathInCaseInsensitive() throws {
     let predicate: Predicate<Data> = (\Data.text).in(["hello", "world", "welcome"], .caseInsensitive)
