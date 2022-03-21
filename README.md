@@ -348,6 +348,19 @@ You can use the  `in`  function to determine whether a property's value is one o
 // Matches all notes where the text is one of the elements in the specified list.
 let predicate = (\Note.text).in("a", "b", "c", "d")
 ```
+or pass in an Array
+
+```swift
+// Matches all notes where the text is one of the elements in the specified list.
+let predicate = (\Note.text).in(["a", "b", "c", "d"])
+```
+
+or pass in a Set 
+
+```swift
+// Matches all notes where the text is one of the elements in the specified list.
+let predicate = (\Note.text).in(Set(["a", "b", "c", "d"]))
+```
 
 When the property is of type `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
 
