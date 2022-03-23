@@ -341,28 +341,21 @@ let predicate = \Note.numberOfViews ~= 100...200
 
 ###### in
 
-You can use the  `in`  function to determine whether a property's value is one of the values in a specified list.
+You can use the `in` function to determine whether a property's value is one of the values in a variadic arguments (comma-separated list), an array, or a set.
 
 
 ```swift
-// Matches all notes where the text is one of the elements in the specified list.
+// Matches all notes where the text is one of the elements in the specified variadic arguments list.
 let predicate = (\Note.text).in("a", "b", "c", "d")
-```
-or pass in an Array
 
-```swift
-// Matches all notes where the text is one of the elements in the specified list.
+// Matches all notes where the text is one of the elements in the specified array.
 let predicate = (\Note.text).in(["a", "b", "c", "d"])
-```
 
-or pass in a Set 
-
-```swift
-// Matches all notes where the text is one of the elements in the specified list.
+// Matches all notes where the text is one of the elements in the specified set.
 let predicate = (\Note.text).in(Set(["a", "b", "c", "d"]))
 ```
 
-When the property is of type `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
+When the array `Element` is a `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
 
 ```swift
 // Case-insensitive comparison.
