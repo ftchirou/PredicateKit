@@ -477,6 +477,14 @@ extension Expression where Value: Primitive {
   public func `in`(_ list: Value...) -> Predicate<Root> {
     .comparison(.init(self, .in, list))
   }
+
+  public func `in`(_ list: [Value]) -> Predicate<Root> {
+    .comparison(.init(self, .in, list))
+  }
+    
+  public func `in`(_ set: Set<Value>) -> Predicate<Root> where Value: Hashable {
+    .comparison(.init(self, .in, Array(set)))
+  }
 }
 
 extension Expression where Value: StringValue & Primitive {
