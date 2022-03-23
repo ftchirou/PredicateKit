@@ -1337,45 +1337,45 @@ final class OperatorTests: XCTestCase {
   }
     
   func testKeyPathInArray() throws {
-    let predicate: Predicate<Data> = (\Data.text).in(["hello", "world", "welcome"])
+    let predicate: Predicate<Data> = (\Data.count).in([21, 42, 63])
 
     guard case let .comparison(comparison) = predicate else {
-      XCTFail("text.in(['hello', 'world', 'welcome']) should result in a comparison")
+      XCTFail("count.in([21, 42, 63]) should result in a comparison")
       return
     }
 
-    guard let keyPath = comparison.expression.as(KeyPath<Data, String>.self) else {
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Int>.self) else {
       XCTFail("the left side of the comparison should be a key path expression")
       return
     }
 
-    let value = try XCTUnwrap(comparison.value as? [String])
+    let value = try XCTUnwrap(comparison.value as? [Int])
 
-    XCTAssertEqual(keyPath, \Data.text)
+    XCTAssertEqual(keyPath, \Data.count)
     XCTAssertEqual(comparison.operator, .in)
-    XCTAssertEqual(value, ["hello", "world", "welcome"])
+    XCTAssertEqual(value, [21, 42, 63])
   }
 
   func testKeyPathInSet() throws {
-    let predicate: Predicate<Data> = (\Data.text).in(Set(["hello", "world", "welcome"]))
+    let predicate: Predicate<Data> = (\Data.count).in(Set([21, 42, 63]))
     
     guard case let .comparison(comparison) = predicate else {
-      XCTFail("text.in(Set(['hello', 'world', 'welcome'])) should result in a comparison")
+      XCTFail("count.in(Set([21, 42, 63])) should result in a comparison")
       return
     }
     
-    guard let keyPath = comparison.expression.as(KeyPath<Data, String>.self) else {
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Int>.self) else {
       XCTFail("the left side of the comparison should be a key path expression")
       return
     }
     
-    let value = try XCTUnwrap(comparison.value as? [String])
+    let value = try XCTUnwrap(comparison.value as? [Int])
     
-    XCTAssertEqual(keyPath, \Data.text)
+    XCTAssertEqual(keyPath, \Data.count)
     XCTAssertEqual(comparison.operator, .in)
-    XCTAssertTrue(value.contains("hello"), "searched item '\("hello")' is missing in comparison.value")
-    XCTAssertTrue(value.contains("world"), "searched item '\("world")' is missing in comparison.value")
-    XCTAssertTrue(value.contains("welcome"), "searched item '\("welcome")' is missing in comparison.value")
+    XCTAssertTrue(value.contains(21), "searched item '\(21)' is missing in comparison.value")
+    XCTAssertTrue(value.contains(42), "searched item '\(42)' is missing in comparison.value")
+    XCTAssertTrue(value.contains(63), "searched item '\(63)' is missing in comparison.value")
     XCTAssertEqual(value.count, 3, "IN expression had \(3) items, found \(value.count)")
   }
   
