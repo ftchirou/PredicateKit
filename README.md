@@ -355,7 +355,7 @@ let predicate = (\Note.text).in(["a", "b", "c", "d"])
 let predicate = (\Note.text).in(Set(["a", "b", "c", "d"]))
 ```
 
-When the array `Element` is a `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
+When the property type is a `String`, `in` accepts a second parameter that determines how the string should be compared to the elements in the list.
 
 ```swift
 // Case-insensitive comparison.
