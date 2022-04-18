@@ -29,7 +29,7 @@ import XCTest
 // view's graph. We don't really test here that our `Predicate`s and `FetchRequest`s are properly converted to
 // `NSPredicate`s and `NSFetchRequest`s; we rely on the tests in `NSFetchRequestBuilderTests` and assume the conversion
 // correctness. Here, we just want to ensure that the view's graph will contain the expected `NSFetchRequest`.
-@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+@available(iOS 15.0, watchOS 8.0, tvOS 15.0, macOS 12.0, *)
 class SwiftUISupportTests: XCTestCase {
   func testFetchRequestPropertyWrapperWithBasicPredicate() throws {
     struct ContentView: View {
@@ -45,10 +45,10 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
-    let comparison = try XCTUnwrap(request.predicate as? NSComparisonPredicate)
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "text"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: "Hello, World!"))
     XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
@@ -73,16 +73,16 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
-    let comparison = try XCTUnwrap(request.predicate as? NSComparisonPredicate)
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "creationDate"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: Date.now))
     XCTAssertEqual(comparison.predicateOperatorType, .lessThan)
     XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
 
-    let sortDescriptors = try XCTUnwrap(request.sortDescriptors)
+    let sortDescriptors = try XCTUnwrap(request.projectedValue.wrappedValue.nsSortDescriptors)
     XCTAssertEqual(sortDescriptors.count, 2)
     XCTAssertEqual(sortDescriptors.first?.key, "text")
     XCTAssertTrue(sortDescriptors.first?.ascending ?? false)
@@ -107,15 +107,15 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
-    let comparison = try XCTUnwrap(request.predicate as? NSComparisonPredicate)
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "creationDate"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: Date.now))
     XCTAssertEqual(comparison.predicateOperatorType, .lessThan)
     XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
-    XCTAssertEqual(request.fetchLimit, 100)
+    // TODO: Find a way to assert that the fetch limit is indeed 100.
   }
 
   func testFetchRequestPropertyWrapperWithAnimation() throws {
@@ -132,7 +132,7 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
     let transaction = try XCTUnwrap(
@@ -140,7 +140,7 @@ class SwiftUISupportTests: XCTestCase {
     )
     XCTAssertEqual(transaction.animation, .easeIn)
 
-    let comparison = try XCTUnwrap(request.predicate as? NSComparisonPredicate)
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "numberOfViews"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: 42))
     XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
@@ -164,7 +164,7 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
     let transaction = try XCTUnwrap(
@@ -173,7 +173,7 @@ class SwiftUISupportTests: XCTestCase {
     XCTAssertEqual(transaction.animation, .easeInOut)
     XCTAssertFalse(transaction.isContinuous)
 
-    let comparison = try XCTUnwrap(request.predicate as? NSComparisonPredicate)
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
     XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "text"))
     XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: "Hello, World!"))
     XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
@@ -197,10 +197,10 @@ class SwiftUISupportTests: XCTestCase {
 
     let view = ContentView().environment(\.managedObjectContext, .default)
     let request = try XCTUnwrap(
-      Mirror(reflecting: view).descendant("content", "_notes", "fetchRequest") as? NSFetchRequest<Note>
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
     )
 
-    XCTAssertEqual(request.predicate, NSPredicate(value: true))
+    XCTAssertEqual(request.projectedValue.wrappedValue.nsPredicate, NSPredicate(value: true))
   }
 }
 
