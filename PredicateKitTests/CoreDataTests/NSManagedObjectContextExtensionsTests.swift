@@ -115,6 +115,26 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertNil(texts.first?["numberOfViews"])
     XCTAssertNil(texts.first?["creationDate"])
   }
+  
+  func testFetchDictionaryResultsWithBasicComparison() throws {
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"])
+    )
+    
+    let texts: [[String: Any]] = try container
+      .viewContext
+      .fetch(where: \Note.text == "Hello, World!")
+      .fetchingOnly(\Note.text)
+      .dictionaryResults()
+    
+    XCTAssertEqual(texts.count, 1)
+    XCTAssertEqual(texts.first?.count, 1)
+    XCTAssertEqual(texts.first?["text"] as? String, "Hello, World!")
+    XCTAssertNil(texts.first?["tags"])
+    XCTAssertNil(texts.first?["numberOfViews"])
+    XCTAssertNil(texts.first?["creationDate"])
+  }
 
   func testFetchAll() throws {
     try container.viewContext.insertNotes(
@@ -126,6 +146,21 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
       .fetchAll()
       .result()
 
+    XCTAssertEqual(notes.count, 2)
+    XCTAssertTrue(notes.contains(where: { $0.text == "Hello, World!" }))
+    XCTAssertTrue(notes.contains(where: { $0.text == "Goodbye!" }))
+  }
+  
+  func testFetchAllEntityResults() throws {
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"])
+    )
+    
+    let notes: [Note] = try container.viewContext
+      .fetchAll()
+      .entityResults()
+    
     XCTAssertEqual(notes.count, 2)
     XCTAssertTrue(notes.contains(where: { $0.text == "Hello, World!" }))
     XCTAssertTrue(notes.contains(where: { $0.text == "Goodbye!" }))
