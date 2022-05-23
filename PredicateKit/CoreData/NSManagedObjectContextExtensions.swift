@@ -334,7 +334,24 @@ public struct FetchRequest<Entity: NSManagedObject> {
     #endif
     return try context.fetch(request)
   }
-
+  
+  // MARK: -
+  
+  /// Executes the fetch request.
+  ///
+  /// - Returns: An array of objects of type `Entity` matching the criteria specified by the fetch request.
+  ///
+  /// ## Example
+  ///
+  ///      let notes: [Note] = try managedObjectContext
+  ///        .fetch(where: (\Note.text).contains("Hello, World!"))
+  ///        .sorted(by: \.creationDate, .descending)
+  ///        .result()
+  ///
+  public func entityResults() throws -> [Entity] {
+    try result()
+  }
+  
   /// Executes the fetch request.
   ///
   /// - Returns: An array of `[String: Any]` containing the keys or a subset of the keys of the objects of type `Entity`
@@ -356,6 +373,22 @@ public struct FetchRequest<Entity: NSManagedObject> {
     return try context.fetch(request) as! [[String: Any]]
   }
 
+  /// Executes the fetch request.
+  ///
+  /// - Returns: An array of `[String: Any]` containing the keys or a subset of the keys of the objects of type `Entity`
+  ///   matching the criteria specified by the fetch request.
+  ///
+  /// ## Example
+  ///
+  ///     let dictionaries: [[String: Any]] = try managedObjectContext
+  ///        .fetch(where: (\Note.text).contains("Hello, World!"))
+  ///        .sorted(by: \.creationDate, .descending)
+  ///        .fetchingOnly(\.text, \.creationDate)
+  ///
+  func dictionaryResults() throws -> [[String: Any]] {
+    try result()
+  }
+  
   /// Counts the number of objects matching the criteria specified by the fetch request.
   ///
   /// - Returns: The number of objects matching the criteria specified by the fetch request.
