@@ -110,7 +110,7 @@ dependencies: [
 
 ## Fetching objects
 
-To fetch objects using PredicateKit, use the function `fetch(where:)` on an instance of `NSManagedObjectContext` passing as argument a predicate. `fetch(where:)` returns an object of type `FetchRequest` on which you call `result()` to execute the request and retrieve the matching objects.
+To fetch objects using PredicateKit, use the function `fetch(where:)` on an instance of `NSManagedObjectContext` passing as argument a predicate. `fetch(where:)` returns an object of type `FetchRequest` on which you call `result()` (or `entityResult()` to allow function chaining) to execute the request and retrieve the matching objects.
 
 ###### Example
 
@@ -118,6 +118,11 @@ To fetch objects using PredicateKit, use the function `fetch(where:)` on an inst
 let notes: [Note] = try managedObjectContext
   .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
   .result()
+  
+let notes = try managedObjectContext
+  .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
+  .entityResult()
+  .first
 ```
 
 You write your predicates using the [key-paths](https://developer.apple.com/documentation/swift/keypath) of the entity to filter and a combination of comparison and logical operators, literal values, and functions calls.
@@ -126,8 +131,8 @@ See [Writing predicates](#writing-predicates) for more about writing predicates.
 
 ### Fetching objects as dictionaries
 
-By default, `fetch(where:)` returns an array of subclasses of `NSManagedObject`. You can specify that the objects be returned as an array of dictionaries (`[[String: Any]]`)
-simply by changing the type of the variable storing the result of the fetch.
+By default, `fetch(where:)` returns an array of subclasses of `NSManagedObject`. You can specify that the objects be returned as an array of dictionaries `[[String: Any]]`
+simply by changing the type of the variable storing the result of the fetch or specifically calling `dictionaryResult()`.
 
 ###### Example
 
@@ -135,6 +140,10 @@ simply by changing the type of the variable storing the result of the fetch.
 let notes: [[String: Any]] = try managedObjectContext
   .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
   .result()
+  
+let notes = try managedObjectContext
+  .fetch(where: \Note.text == "Hello, World!" && \Note.creationDate < Date())
+  .dictionaryResult()
 ```
 
 ## Configuring the fetch
