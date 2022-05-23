@@ -116,7 +116,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertNil(texts.first?["creationDate"])
   }
   
-  func testFetchDictionaryResultsWithBasicComparison() throws {
+  func testFetchDictionaryResultWithBasicComparison() throws {
     try container.viewContext.insertNotes(
       (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"]),
       (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"])
@@ -126,7 +126,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
       .viewContext
       .fetch(where: \Note.text == "Hello, World!")
       .fetchingOnly(\Note.text)
-      .dictionaryResults()
+      .dictionaryResult()
     
     XCTAssertEqual(texts.count, 1)
     XCTAssertEqual(texts.first?.count, 1)
@@ -159,7 +159,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     
     let notes: [Note] = try container.viewContext
       .fetchAll()
-      .entityResults()
+      .entityResult()
     
     XCTAssertEqual(notes.count, 2)
     XCTAssertTrue(notes.contains(where: { $0.text == "Hello, World!" }))

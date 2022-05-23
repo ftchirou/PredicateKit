@@ -346,9 +346,9 @@ public struct FetchRequest<Entity: NSManagedObject> {
   ///      let notes: [Note] = try managedObjectContext
   ///        .fetch(where: (\Note.text).contains("Hello, World!"))
   ///        .sorted(by: \.creationDate, .descending)
-  ///        .result()
+  ///        .entityResult()
   ///
-  public func entityResults() throws -> [Entity] {
+  public func entityResult() throws -> [Entity] {
     try result()
   }
   
@@ -384,8 +384,9 @@ public struct FetchRequest<Entity: NSManagedObject> {
   ///        .fetch(where: (\Note.text).contains("Hello, World!"))
   ///        .sorted(by: \.creationDate, .descending)
   ///        .fetchingOnly(\.text, \.creationDate)
+  ///        .dictionaryResult()
   ///
-  func dictionaryResults() throws -> [[String: Any]] {
+  func dictionaryResult() throws -> [[String: Any]] {
     try result()
   }
   
