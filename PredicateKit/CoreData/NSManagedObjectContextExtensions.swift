@@ -386,7 +386,7 @@ public struct FetchRequest<Entity: NSManagedObject> {
   ///        .fetchingOnly(\.text, \.creationDate)
   ///        .dictionaryResult()
   ///
-  func dictionaryResult() throws -> [[String: Any]] {
+  public func dictionaryResult() throws -> [[String: Any]] {
     try result()
   }
   
