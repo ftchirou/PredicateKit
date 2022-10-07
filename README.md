@@ -541,7 +541,7 @@ class Profile: NSManagedObject {
 }
 
 // Matches all accounts where all the profiles have the creation date equal to the specified one.
-let predicate = (\Account.profile).all(\.creationDate) == date
+let predicate = (\Account.profiles).all(\.creationDate) == date
 
 // Matches all accounts where any of the associated profiles has a name containing 'John'.
 let predicate = (\Account.profiles).any(\.name).contains("John"))
@@ -553,7 +553,7 @@ let predicate = (\Account.profiles).none(\.name) == "John Doe"
 ### Sub-predicates
 
 When your object has one-to-many relationships, you can create a sub-predicate that filters the "many" relationships and use the
-resuult of the sub-predicate in a more complex predicate. Sub-predicates are created using the global `all(_:where:)` function. The first
+result of the sub-predicate in a more complex predicate. Sub-predicates are created using the global `all(_:where:)` function. The first
 parameter is the key-path of the collection to filter and the second parameter is a predicate that filters the collection.
 
 `all(_:where:)` evaluates to an array; that means you can perform any valid [array operation](#array-operations) on its result such as `size`, `first`, etc.
@@ -665,7 +665,7 @@ Specifies the persistent stores to be searched when the fetch request is execute
 
 ```swift
 let store1: NSPersistentStore = ...
-let store2: NSPersistenStore = ...
+let store2: NSPersistentStore = ...
 
 managedObjectContext.fetch(where: ...)
   .fromStores(store1, store2)
@@ -738,7 +738,7 @@ managedObjectContext.fetch(where: ...)
 
 ### having
 
-pecifies the predicate to use to filter objects returned by a request with a [`groupBy(_:)`](#groupby) modifier applied.
+Specifies the predicate to use to filter objects returned by a request with a [`groupBy(_:)`](#groupby) modifier applied.
 
 ###### Usage
 
@@ -787,7 +787,7 @@ managedObjectContext.fetch(where: ...)
 Specifies how the objects returned by the request should be sorted. This modifier takes one required parameter and 2 optional ones:
 
 - `by`: the key-path by which to sort the objects. (Required)
-- `order`: the order in which to sort the object. (Optional, defaults to `.ascending`)
+- `order`: the order in which to sort the objects. (Optional, defaults to `.ascending`)
 - `comparator`: a custom comparator to use to sort the objects. (Optional, defaults to `nil`)
 
 ###### Usage
