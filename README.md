@@ -1,5 +1,5 @@
 # 🎯 PredicateKit
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/ftchirou/PredicateKit/Test/main) <img src="https://img.shields.io/badge/coverage-100%25-green"> ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ftchirou/PredicateKit) <img src="https://img.shields.io/badge/platforms-iOS%2011%2B%20%7C%20macOS%2010.15%2B%20%7C%20watchOS%205%2B%20%7C%20tvOS%2011%2B-lightgrey"> <img src="https://img.shields.io/badge/swift-%3E%3D%205.1-orange">
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/ftchirou/PredicateKit/unit-tests.yml?branch=main) <img src="https://img.shields.io/badge/coverage-100%25-green"> ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ftchirou/PredicateKit) <img src="https://img.shields.io/badge/platforms-iOS%2011%2B%20%7C%20macOS%2010.15%2B%20%7C%20watchOS%205%2B%20%7C%20tvOS%2011%2B-lightgrey"> <img src="https://img.shields.io/badge/swift-%3E%3D%205.1-orange">
 
 **PredicateKit** is an alternative to [`NSPredicate`](https://developer.apple.com/documentation/foundation/nspredicate) allowing you to 
 write expressive and type-safe predicates for [CoreData](https://developer.apple.com/documentation/coredata) using [key-paths](https://developer.apple.com/documentation/swift/keypath),
