@@ -116,7 +116,7 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertNil(texts.first?["creationDate"])
   }
 
-  @available(iOS 13.0, *)
+  @available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
   func testFetchWithObjectComparison() throws {
     let attachment1 = try container.viewContext.insertAttachment("1")
     let attachment2 = try container.viewContext.insertAttachment("2")

@@ -378,7 +378,7 @@ public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Pre
   .comparison(.init(lhs, .equal, rhs))
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public func == <E: Expression, T: Identifiable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.ID: Primitive {
   .comparison(.init(ObjectIdentifier<E, T.ID>(root: lhs), .equal, rhs.id))
 }
