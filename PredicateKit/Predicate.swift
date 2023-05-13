@@ -313,6 +313,13 @@ public struct ArrayElementKeyPath<Array, Value>: Expression where Array: Express
   let elementKeyPath: AnyKeyPath
 }
 
+public struct ObjectIdentifier<Object: Expression, Identifier: Primitive>: Expression {
+  public typealias Root = Object
+  public typealias Value = Identifier
+
+  let root: Object
+}
+
 enum ComparisonOperator {
   case lessThan
   case lessThanOrEqual
@@ -369,6 +376,11 @@ public func <= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Pr
 
 public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .equal, rhs))
+}
+
+@available(iOS 13.0, *)
+public func == <E: Expression, T: Identifiable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.ID: Primitive {
+  .comparison(.init(ObjectIdentifier<E, T.ID>(root: lhs), .equal, rhs.id))
 }
 
 @_disfavoredOverload
