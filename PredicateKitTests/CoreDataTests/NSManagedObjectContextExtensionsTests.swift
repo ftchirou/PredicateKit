@@ -116,6 +116,27 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertNil(texts.first?["creationDate"])
   }
 
+  @available(iOS 13.0, *)
+  func testFetchWithObjectComparison() throws {
+    let attachment1 = try container.viewContext.insertAttachment("1")
+    let attachment2 = try container.viewContext.insertAttachment("2")
+
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"], attachment: attachment1 ),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"], attachment: attachment2 ),
+      (text: "See ya!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"], attachment: attachment2 )
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.attachment == attachment1)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Hello, World!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 42)
+  }
+
   func testFetchAll() throws {
     try container.viewContext.insertNotes(
       (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"]),
@@ -675,6 +696,7 @@ class Note: NSManagedObject {
   @NSManaged var updateDate: Date?
   @NSManaged var numberOfViews: Int
   @NSManaged var tags: [String]
+  @NSManaged var attachment: Attachment
 }
 
 class Account: NSManagedObject {
@@ -701,9 +723,13 @@ class Profile: NSManagedObject {
   @NSManaged var creationDate: Date
 }
 
+class Attachment: NSManagedObject, Identifiable {
+  @NSManaged var id: String
+}
+
 // MARK: -
 
-private extension XCTestCase {
+extension XCTestCase {
   func makePersistentContainer(with model: NSManagedObjectModel) -> NSPersistentContainer {
     let expectation = self.expectation(description: "container")
     let description = NSPersistentStoreDescription()
@@ -752,6 +778,24 @@ private extension NSManagedObjectContext {
     try save()
   }
 
+  func insertNotes(
+    _ notes: (text: String, creationDate: Date, numberOfViews: Int, tags: [String], attachment: Attachment?)...
+  ) throws {
+    for description in notes {
+      let note = NSEntityDescription.insertNewObject(forEntityName: "Note", into: self) as! Note
+      note.text = description.text
+      note.tags = description.tags
+      note.numberOfViews = description.numberOfViews
+      note.creationDate = description.creationDate
+
+      if let attachment = description.attachment {
+        note.attachment = attachment
+      }
+    }
+
+    try save()
+  }
+
   func insertAccounts(purchases: [[Double]]) throws {
     for description in purchases {
       let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: self) as! Account
@@ -791,6 +835,15 @@ private extension NSManagedObjectContext {
     }
 
     try save()
+  }
+
+  func insertAttachment(_ id: String) throws -> Attachment {
+    let attachment = NSEntityDescription.insertNewObject(forEntityName: "Attachment", into: self) as! Attachment
+    attachment.id = id
+
+    try save()
+
+    return attachment
   }
 
   func deleteAll<T: NSManagedObject>(_ type: T.Type) {

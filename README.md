@@ -277,6 +277,7 @@ class Note: NSManagedObject {
   @NSManaged var creationDate: Date
   @NSManaged var numberOfViews: Int
   @NSManaged var tags: [String]
+  @NSManaged var attachment: Attachment
 }
 
 // Matches all notes where the text is equal to "Hello, World!".
@@ -287,6 +288,9 @@ let predicate = \Note.creationDate < Date()
 
 // Matches all notes where the number of views is at least 120.
 let predicate = \Note.numberOfViews >= 120
+
+// Matches all notes having the specified attachment. `Attachment` must conform to `Identifiable`.
+let predicate = \Note.attachment == attachment
 ```
 
 #### String comparisons

@@ -302,6 +302,13 @@ extension Query: NSExpressionConvertible {
   }
 }
 
+extension ObjectIdentifier: NSExpressionConvertible where Object: NSExpressionConvertible {
+  func toNSExpression(options: NSExpressionConversionOptions) -> NSExpression {
+    let root = self.root.toNSExpression(options: options)
+    return NSExpression(format: "\(root).id")
+  }
+}
+
 // MARK: - Primitive
 
 private extension Primitive {

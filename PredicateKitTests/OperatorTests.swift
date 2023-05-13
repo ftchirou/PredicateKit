@@ -236,6 +236,37 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, 42)
   }
 
+  @available(iOS 13.0, *)
+  func testKeyPathEqualIdentifiable() throws {
+    struct Data {
+      let identifiable: IdentifiableData
+    }
+
+    struct IdentifiableData: Identifiable, Equatable {
+      let id: String
+    }
+
+    let predicate = \Data.identifiable == IdentifiableData(id: "1")
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("identifiable.id == 1 should result in a comparison")
+      return
+    }
+
+    guard
+      let expression = comparison.expression.as(ObjectIdentifier<KeyPath<Data, IdentifiableData>, String>.self)
+    else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? IdentifiableData.ID)
+
+    XCTAssertEqual(expression.root, \Data.identifiable)
+    XCTAssertEqual(comparison.operator, .equal)
+    XCTAssertEqual(value, "1")
+  }
+
   func testOptionalKeyPathEqualToNil() throws {
     let predicate: Predicate<Data> = \Data.optionalRelationship == nil
 
@@ -2197,6 +2228,7 @@ private struct Data {
   let creationDate: Date
   let optionalRelationship: Relationship?
   let optionalRelationships: [Relationship]?
+  let identifiable: IdentifiableData?
 }
 
 private struct Relationship {
