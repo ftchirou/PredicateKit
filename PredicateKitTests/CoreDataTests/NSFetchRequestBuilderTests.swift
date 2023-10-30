@@ -23,6 +23,7 @@ import Foundation
 import XCTest
 
 @testable import PredicateKit
+import enum PredicateKit.Predicate
 
 final class NSFetchRequestBuilderTests: XCTestCase {
 

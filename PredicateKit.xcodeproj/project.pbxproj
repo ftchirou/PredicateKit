@@ -23,6 +23,7 @@
 		320347252549A66E00F9661B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 320347242549A66E00F9661B /* README.md */; };
 		3203472D254C952600F9661B /* NSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3203472C254C952500F9661B /* NSFetchRequestInspector.swift */; };
 		32034735254CC05300F9661B /* MockNSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */; };
+		322517D82AEF7E85003DD2CD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 322517D72AEF7E85003DD2CD /* PrivacyInfo.xcprivacy */; };
 		32C8F72325B22CBE00903E22 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */; };
 		32C8F75525B248C700903E22 /* SwiftUISupportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */; };
 /* End PBXBuildFile section */
@@ -57,6 +58,7 @@
 		320347242549A66E00F9661B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3203472C254C952500F9661B /* NSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSFetchRequestInspector.swift; sourceTree = "<group>"; };
 		32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNSFetchRequestInspector.swift; sourceTree = "<group>"; };
+		322517D72AEF7E85003DD2CD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = PredicateKit/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
 		32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 				32C8F72125B22C9D00903E22 /* SwiftUI */,
 				320347122548EE4B00F9661B /* Functions.swift */,
 				320346602546AA5400F9661B /* Info.plist */,
+				322517D72AEF7E85003DD2CD /* PrivacyInfo.xcprivacy */,
 				3203467C2546AB9A00F9661B /* Primitive.swift */,
 				320346802546ABB900F9661B /* Predicate.swift */,
 				3203465F2546AA5400F9661B /* PredicateKit.h */,
@@ -271,6 +274,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				322517D82AEF7E85003DD2CD /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
