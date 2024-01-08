@@ -326,7 +326,7 @@ private extension Primitive {
 
 extension AnyKeyPath {
   var stringValue: String {
-    // https://github.com/apple/swift/blob/main/stdlib/public/core/KeyPath.swift#L124
+    // https://github.com/apple/swift/blob/swift-5.9.2-RELEASE/stdlib/public/core/KeyPath.swift#L191
     guard let value = _kvcKeyPathString else {
       fatalError("Could not create a string representation of the key path \(self).")
     }
