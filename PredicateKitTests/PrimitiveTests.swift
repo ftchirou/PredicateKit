@@ -158,4 +158,25 @@ final class PrimitiveTests: XCTestCase {
     XCTAssertFalse(nil < rhs)
     XCTAssertFalse(lhs < nil)
   }
+
+  func testDefaultComparisonOptions() {
+    XCTAssertEqual(UUID.defaultComparisonOptions, .none)
+    XCTAssertEqual(Bool.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Int.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Int8.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Int16.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Int32.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Int64.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(UInt.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(UInt8.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(UInt16.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(UInt32.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(UInt64.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Double.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Float.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(String.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Date.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(URL.defaultComparisonOptions, .caseInsensitive)
+    XCTAssertEqual(Data.defaultComparisonOptions, .caseInsensitive)
+  }
 }
