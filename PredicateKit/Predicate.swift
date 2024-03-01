@@ -349,6 +349,7 @@ public struct ComparisonOptions: OptionSet {
   public static let caseInsensitive = ComparisonOptions(rawValue: 1 << 0)
   public static let diacriticInsensitive = ComparisonOptions(rawValue: 1 << 1)
   public static let normalized = ComparisonOptions(rawValue: 1 << 2)
+  public static let none = ComparisonOptions(rawValue: 1 << 3)
 
   public init(rawValue: Int) {
     self.rawValue = rawValue
@@ -718,11 +719,22 @@ extension Optional: ComparableCollection where Wrapped: ComparableCollection {
 // MARK: - Private Initializers
 
 extension Comparison {
+  fileprivate init<E: Expression, P: Primitive>(
+    _ expression: E,
+    _ `operator`: ComparisonOperator,
+    _ value: P
+  ) {
+    self.expression = AnyExpression(expression)
+    self.operator = `operator`
+    self.value = value
+    self.options = P.defaultComparisonOptions
+  }
+
   fileprivate init<E: Expression>(
     _ expression: E,
     _ `operator`: ComparisonOperator,
     _ value: Primitive,
-    _ options: ComparisonOptions = .caseInsensitive
+    _ options: ComparisonOptions
   ) {
     self.expression = AnyExpression(expression)
     self.operator = `operator`
@@ -756,6 +768,20 @@ extension ArrayElementKeyPath {
       return .any
     case .none:
       return .none
+    }
+  }
+}
+
+extension Primitive {
+  static var defaultComparisonOptions: ComparisonOptions {
+    switch type {
+    case .uuid:
+      return .none
+
+    // TODO: Add proper defaults for the other types.
+    // For now, .caseInsensitive does not seem to hurt?
+    default:
+      return .caseInsensitive
     }
   }
 }
