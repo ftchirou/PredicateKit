@@ -20,7 +20,6 @@
 		3203470F2548C54200F9661B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3203470D2548C54200F9661B /* DataModel.xcdatamodeld */; };
 		320347132548EE4B00F9661B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320347122548EE4B00F9661B /* Functions.swift */; };
 		32034719254903B700F9661B /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32034718254903B700F9661B /* XCTestCaseExtensions.swift */; };
-		320347252549A66E00F9661B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 320347242549A66E00F9661B /* README.md */; };
 		3203472D254C952600F9661B /* NSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3203472C254C952500F9661B /* NSFetchRequestInspector.swift */; };
 		32034735254CC05300F9661B /* MockNSFetchRequestInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */; };
 		322517D82AEF7E85003DD2CD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 322517D72AEF7E85003DD2CD /* PrivacyInfo.xcprivacy */; };
@@ -59,6 +58,8 @@
 		3203472C254C952500F9661B /* NSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSFetchRequestInspector.swift; sourceTree = "<group>"; };
 		32034734254CC05300F9661B /* MockNSFetchRequestInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNSFetchRequestInspector.swift; sourceTree = "<group>"; };
 		322517D72AEF7E85003DD2CD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = PredicateKit/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
+		32B8E6552B948E5100512327 /* PredicateKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PredicateKit.podspec; sourceTree = "<group>"; };
+		32B8E6572B948E7900512327 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		32C8F72225B22CBE00903E22 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
 		32C8F75425B248C700903E22 /* SwiftUISupportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +90,8 @@
 				320346692546AA5400F9661B /* PredicateKitTests */,
 				3203465D2546AA5400F9661B /* Products */,
 				320347242549A66E00F9661B /* README.md */,
+				32B8E6572B948E7900512327 /* Package.swift */,
+				32B8E6552B948E5100512327 /* PredicateKit.podspec */,
 			);
 			sourceTree = "<group>";
 		};
@@ -282,7 +285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				320347252549A66E00F9661B /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +390,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -445,6 +448,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

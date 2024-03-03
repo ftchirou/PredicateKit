@@ -278,6 +278,16 @@ class Note: NSManagedObject {
   @NSManaged var numberOfViews: Int
   @NSManaged var tags: [String]
   @NSManaged var attachment: Attachment
+  @NSManaged var type: NoteType
+}
+
+class Attachment: NSManagedObject, Identifiable {
+  // ...
+}
+
+@objc enum NoteType: Int {
+  case freeForm
+  // ...
 }
 
 // Matches all notes where the text is equal to "Hello, World!".
@@ -289,8 +299,11 @@ let predicate = \Note.creationDate < Date()
 // Matches all notes where the number of views is at least 120.
 let predicate = \Note.numberOfViews >= 120
 
-// Matches all notes having the specified attachment. `Attachment` must conform to `Identifiable`.
+// Matches all notes having the specified attachment (`Attachment` must conform to `Identifiable`).
 let predicate = \Note.attachment == attachment
+
+// Matches all free form notes (assuming `NoteType` is an enumeration whose `RawValue` conforms to `Equatable`).
+let predicate = \Note.type == .freeForm
 ```
 
 #### String comparisons

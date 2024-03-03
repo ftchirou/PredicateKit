@@ -371,12 +371,25 @@ public func < <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Pre
   .comparison(.init(lhs, .lessThan, rhs))
 }
 
+public func < <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Comparable & Primitive {
+  .comparison(.init(lhs, .lessThan, rhs.rawValue))
+}
+
 public func <= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .lessThanOrEqual, rhs))
 }
 
+public func <= <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Comparable & Primitive {
+  .comparison(.init(lhs, .lessThanOrEqual, rhs.rawValue))
+}
+
+
 public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .equal, rhs))
+}
+
+public func == <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Equatable & Primitive {
+  .comparison(.init(lhs, .equal, rhs.rawValue))
 }
 
 @available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
@@ -397,8 +410,16 @@ public func >= <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Pr
   .comparison(.init(lhs, .greaterThanOrEqual, rhs))
 }
 
+public func >= <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Comparable & Primitive {
+  .comparison(.init(lhs, .greaterThanOrEqual, rhs.rawValue))
+}
+
 public func > <E: Expression, T: Comparable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .greaterThan, rhs))
+}
+
+public func > <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Comparable & Primitive {
+  .comparison(.init(lhs, .greaterThan, rhs.rawValue))
 }
 
 // MARK: - Compound Predicates

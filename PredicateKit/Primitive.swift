@@ -24,6 +24,7 @@ import Foundation
 
 public protocol Primitive {
   static var type: Type { get }
+  var predicateValue: Any? { get }
 }
 
 public indirect enum Type: Equatable {
@@ -48,6 +49,10 @@ public indirect enum Type: Equatable {
   case wrapped(Type)
   case array(Type)
   case `nil`
+}
+
+extension Primitive {
+  public var predicateValue: Any? { self }
 }
 
 extension Bool: Primitive {
@@ -110,8 +115,12 @@ extension Date: Primitive {
   public static var type: Type { .date }
 }
 
+// TODO: Potentially remove this in the next major version. RawRepresentables (with primitive
+// raw values) can already be used in predicates without explicitly conforming to Primitive.
 extension Primitive where Self: RawRepresentable, RawValue: Primitive {
   public static var type: Type { RawValue.type }
+
+  public var predicateValue: Any? { rawValue }
 }
 
 extension Array: Primitive where Element: Primitive {
@@ -136,6 +145,8 @@ extension Optional: Primitive where Wrapped: Primitive {
 
 public struct Nil: Primitive, ExpressibleByNilLiteral {
   public static var type: Type { .nil }
+
+  public var predicateValue: Any? { NSNull() }
 
   public init(nilLiteral: ()) {
   }

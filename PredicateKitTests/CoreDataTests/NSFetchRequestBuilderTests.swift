@@ -130,6 +130,136 @@ final class NSFetchRequestBuilderTests: XCTestCase {
     XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
   }
 
+  func testEqualityWithRawRepresentable() throws {
+    let request = makeRequest(\Data.dataType == .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "dataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: DataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testLessThanWithRawRepresentable() throws {
+    let request = makeRequest(\Data.dataType < .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "dataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: DataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .lessThan)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testLessThanOrEqualWithRawRepresentable() throws {
+    let request = makeRequest(\Data.dataType <= .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "dataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: DataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .lessThanOrEqualTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testGreaterThanWithRawRepresentable() throws {
+    let request = makeRequest(\Data.dataType > .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "dataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: DataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .greaterThan)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testGreaterThanOrEqualWithRawRepresentable() throws {
+    let request = makeRequest(\Data.dataType >= .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "dataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: DataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .greaterThanOrEqualTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testEqualityWithRawRepresentableConformingToPrimitive() throws {
+    let request = makeRequest(\Data.primitiveDataType == .three)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "primitiveDataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: PrimitiveDataType.three.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testLessThanWithRawRepresentableConformingToPrimitive() throws {
+    let request = makeRequest(\Data.primitiveDataType < .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "primitiveDataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: PrimitiveDataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .lessThan)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testLessThanOrEqualWithRawRepresentableConformingToPrimitive() throws {
+    let request = makeRequest(\Data.primitiveDataType <= .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "primitiveDataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: PrimitiveDataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .lessThanOrEqualTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testGreaterThanWithRawRepresentableConformingToPrimitive() throws {
+    let request = makeRequest(\Data.primitiveDataType > .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "primitiveDataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: PrimitiveDataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .greaterThan)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
+  func testGreaterThanOrEqualWithRawRepresentableConformingToPrimitive() throws {
+    let request = makeRequest(\Data.primitiveDataType >= .two)
+    let builder = makeRequestBuilder()
+
+    let result: NSFetchRequest<Data> = builder.makeRequest(from: request)
+
+    let comparison = try XCTUnwrap(result.predicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "primitiveDataType"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: PrimitiveDataType.two.rawValue))
+    XCTAssertEqual(comparison.predicateOperatorType, .greaterThanOrEqualTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+
   func testArrayElementEqualPredicate() throws {
     let request = makeRequest((\Data.relationships).last(\.count) == 42)
     let builder = makeRequestBuilder()
@@ -1156,12 +1286,28 @@ private class Data: NSManagedObject {
   @NSManaged var optionalRelationships: [Relationship]?
   @NSManaged var identifiable: IdentifiableData
   @NSManaged var optionalIdentifiable: IdentifiableData?
+  @NSManaged var dataType: DataType
+  @NSManaged var primitiveDataType: PrimitiveDataType
 }
 
 private class Relationship: NSManagedObject {
   @NSManaged var text: String
   @NSManaged var stocks: [Double]
   @NSManaged var count: Int
+}
+
+@objc private enum DataType: Int {
+  case zero
+  case one
+  case two
+  case three
+}
+
+@objc private enum PrimitiveDataType: Int, Primitive {
+  case zero
+  case one
+  case two
+  case three
 }
 
 private class DataStore: NSAtomicStore {
