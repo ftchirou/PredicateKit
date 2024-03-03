@@ -137,6 +137,22 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertEqual(notes.first?.numberOfViews, 42)
   }
 
+  func testFetchWithEnumComparison() throws {
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"], type: .freeForm),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 122, tags: ["greeting"], type: .structured)
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.type == .freeForm)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Hello, World!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 42)
+  }
+
   func testFetchAll() throws {
     try container.viewContext.insertNotes(
       (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"]),
@@ -697,6 +713,7 @@ class Note: NSManagedObject {
   @NSManaged var numberOfViews: Int
   @NSManaged var tags: [String]
   @NSManaged var attachment: Attachment
+  @NSManaged var type: NoteType
 }
 
 class Account: NSManagedObject {
@@ -725,6 +742,11 @@ class Profile: NSManagedObject {
 
 class Attachment: NSManagedObject, Identifiable {
   @NSManaged var id: String
+}
+
+@objc enum NoteType: Int {
+  case freeForm
+  case structured
 }
 
 // MARK: -
@@ -758,6 +780,7 @@ private extension NSManagedObjectContext {
       note.tags = description.tags
       note.numberOfViews = description.numberOfViews
       note.creationDate = description.creationDate
+      note.type = .freeForm
     }
     
     try save()
@@ -773,6 +796,7 @@ private extension NSManagedObjectContext {
       note.numberOfViews = description.numberOfViews
       note.creationDate = description.creationDate
       note.updateDate = description.updateDate
+      note.type = .freeForm
     }
 
     try save()
@@ -787,10 +811,26 @@ private extension NSManagedObjectContext {
       note.tags = description.tags
       note.numberOfViews = description.numberOfViews
       note.creationDate = description.creationDate
+      note.type = .freeForm
 
       if let attachment = description.attachment {
         note.attachment = attachment
       }
+    }
+
+    try save()
+  }
+
+  func insertNotes(
+    _ notes: (text: String, creationDate: Date, numberOfViews: Int, tags: [String], type: NoteType)...
+  ) throws {
+    for description in notes {
+      let note = NSEntityDescription.insertNewObject(forEntityName: "Note", into: self) as! Note
+      note.text = description.text
+      note.tags = description.tags
+      note.numberOfViews = description.numberOfViews
+      note.creationDate = description.creationDate
+      note.type = description.type
     }
 
     try save()

@@ -81,7 +81,7 @@ struct NSFetchRequestBuilder {
       case .none:
         return NSCompoundPredicate(notPredicateWithSubpredicate: NSComparisonPredicate(
           leftExpression: makeExpression(from: comparison.expression),
-          rightExpression: NSExpression(forConstantValue: comparison.value),
+          rightExpression: makeExpression(from: comparison.value),
           modifier: makeComparisonModifier(from: comparison.modifier),
           type: makeOperator(from: comparison.operator),
           options: makeComparisonOptions(from: comparison.options)
@@ -111,7 +111,7 @@ struct NSFetchRequestBuilder {
   }
 
   private func makeExpression(from primitive: Primitive) -> NSExpression {
-    return NSExpression(forConstantValue: primitive.value)
+    return NSExpression(forConstantValue: primitive.predicateValue)
   }
 
   private func makeOperator(from operator: ComparisonOperator) -> NSComparisonPredicate.Operator {
@@ -306,19 +306,6 @@ extension ObjectIdentifier: NSExpressionConvertible where Object: NSExpressionCo
   func toNSExpression(options: NSExpressionConversionOptions) -> NSExpression {
     let root = self.root.toNSExpression(options: options)
     return NSExpression(format: "\(root).id")
-  }
-}
-
-// MARK: - Primitive
-
-private extension Primitive {
-  var value: Any? {
-    switch Self.type {
-    case .nil:
-      return NSNull()
-    default:
-      return self
-    }
   }
 }
 
