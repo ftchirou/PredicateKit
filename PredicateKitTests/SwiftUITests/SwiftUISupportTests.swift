@@ -202,6 +202,95 @@ class SwiftUISupportTests: XCTestCase {
 
     XCTAssertEqual(request.projectedValue.wrappedValue.nsPredicate, NSPredicate(value: true))
   }
+  
+  func testFetchRequestPropertyWrapperWithChangingPredicate() throws {
+    struct ContentView: View {
+      @SwiftUI.FetchRequest(fetchRequest: FetchRequest())
+      var notes: FetchedResults<Note>
+
+      var body: some View {
+        List(notes, id: \.self) {
+          Text($0.text)
+        }
+      }
+    }
+
+    let view = ContentView().environment(\.managedObjectContext, .default)
+    let request = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_notes") as? SwiftUI.FetchRequest<Note>
+    )
+    
+    request.wrappedValue.updatePredicate(\Note.text == "Hello, World!")
+
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "text"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: "Hello, World!"))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+  
+  // !!!: Sectioned Fetch Request tests fail
+  /*
+  func testSectionedFetchRequestPropertyWrapperWithNoPredicate() throws {
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest()
+          .sorted(by: \.billingInfo.accountType, .ascending)
+          .sorted(by: \.name, .ascending),
+        sectionIdentifier: \.billingInfo.accountType
+      )
+      var users: SectionedFetchResults<String, User>
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }
+      }
+    }
+
+    let view = ContentView().environment(\.managedObjectContext, .default)
+    let request = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_users") as? SwiftUI.SectionedFetchRequest<String, User>
+    )
+
+    XCTAssertEqual(request.projectedValue.wrappedValue.nsPredicate, NSPredicate(value: true))
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithBasicPredicate() throws {
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+        sectionIdentifier: \.billingInfo.accountType
+      )
+      var users: SectionedFetchResults<String, User>
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }
+      }
+    }
+
+    let view = ContentView().environment(\.managedObjectContext, .default)
+    let request = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_users") as? SwiftUI.SectionedFetchRequest<String, User>
+    )
+
+    let comparison = try XCTUnwrap(request.projectedValue.wrappedValue.nsPredicate as? NSComparisonPredicate)
+    XCTAssertEqual(comparison.leftExpression, NSExpression(forKeyPath: "name"))
+    XCTAssertEqual(comparison.rightExpression, NSExpression(forConstantValue: "John Doe"))
+    XCTAssertEqual(comparison.predicateOperatorType, .equalTo)
+    XCTAssertEqual(comparison.comparisonPredicateModifier, .direct)
+  }
+   */
 }
 
 // MARK: -
