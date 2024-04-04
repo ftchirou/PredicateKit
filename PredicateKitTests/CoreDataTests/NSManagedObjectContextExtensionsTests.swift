@@ -137,6 +137,27 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertEqual(notes.first?.numberOfViews, 42)
   }
 
+  @available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+  func testFetchWithObjectComparison2() throws {
+    let attachment1 = try container.viewContext.insertAttachment("1")
+    let attachment2 = try container.viewContext.insertAttachment("2")
+
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"], attachment: attachment1 ),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"], attachment: attachment2 ),
+      (text: "See ya!", creationDate: Date(), numberOfViews: 3, tags: ["greeting"], attachment: attachment2 )
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.attachment != attachment2)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Hello, World!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 42)
+  }
+
   func testFetchWithEnumComparison() throws {
     try container.viewContext.insertNotes(
       (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"], type: .freeForm),
@@ -145,6 +166,22 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
 
     let notes: [Note] = try container.viewContext
       .fetch(where: \Note.type == .freeForm)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Hello, World!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 42)
+  }
+
+  func testFetchWithEnumComparison2() throws {
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: Date(), numberOfViews: 42, tags: ["greeting"], type: .freeForm),
+      (text: "Goodbye!", creationDate: Date(), numberOfViews: 122, tags: ["greeting"], type: .structured)
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.type != .structured)
       .result()
 
     XCTAssertEqual(notes.count, 1)
@@ -684,7 +721,25 @@ final class NSManagedObjectContextExtensionsTests: XCTestCase {
     XCTAssertEqual(notes.first?.numberOfViews, 3)
   }
 
-  func testFetchWithArrayNilEqualityNilEquality() throws {
+  func testFetchWithNilInequality() throws {
+    let now = Date()
+
+    try container.viewContext.insertNotes(
+      (text: "Hello, World!", creationDate: .distantFuture, updateDate: now, numberOfViews: 42, tags: ["greeting"]),
+      (text: "Goodbye!", creationDate: .distantPast, updateDate: nil, numberOfViews: 3, tags: ["greeting"])
+    )
+
+    let notes: [Note] = try container.viewContext
+      .fetch(where: \Note.updateDate != nil)
+      .result()
+
+    XCTAssertEqual(notes.count, 1)
+    XCTAssertEqual(notes.first?.text, "Hello, World!")
+    XCTAssertEqual(notes.first?.tags, ["greeting"])
+    XCTAssertEqual(notes.first?.numberOfViews, 42)
+  }
+
+  func testFetchWithArrayNilEquality() throws {
     try container.viewContext.insertUsers(
       (name: "John Doe", billingAccountType: "Pro", purchases: [35.0, 120.0]),
       (name: "Jane Doe", billingAccountType: "Default", purchases: nil)
