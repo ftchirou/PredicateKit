@@ -383,7 +383,6 @@ public func <= <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicat
   .comparison(.init(lhs, .lessThanOrEqual, rhs.rawValue))
 }
 
-
 public func == <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
   .comparison(.init(lhs, .equal, rhs))
 }
@@ -403,6 +402,20 @@ public func == <E: Expression> (lhs: E, rhs: Nil) -> Predicate<E.Root> where E.V
 }
 
 public func != <E: Expression, T: Equatable & Primitive> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T {
+  .comparison(.init(lhs, .notEqual, rhs))
+}
+
+public func != <E: Expression, T: RawRepresentable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.RawValue: Equatable & Primitive {
+  .comparison(.init(lhs, .notEqual, rhs.rawValue))
+}
+
+@available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+public func != <E: Expression, T: Identifiable> (lhs: E, rhs: T) -> Predicate<E.Root> where E.Value == T, T.ID: Primitive {
+  .comparison(.init(ObjectIdentifier<E, T.ID>(root: lhs), .notEqual, rhs.id))
+}
+
+@_disfavoredOverload
+public func != <E: Expression> (lhs: E, rhs: Nil) -> Predicate<E.Root> where E.Value: OptionalType {
   .comparison(.init(lhs, .notEqual, rhs))
 }
 
