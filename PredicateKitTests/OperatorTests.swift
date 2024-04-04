@@ -268,6 +268,37 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(value, "1")
   }
 
+  func testKeyPathEqualRawRepresentable() throws {
+    struct Data {
+      let rawRepresentable: RawRepresentableValue
+    }
+
+    enum RawRepresentableValue: Int {
+      case zero
+      case one
+    }
+
+    let predicate = \Data.rawRepresentable == .zero
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("rawRepresentable == .zero should result in a comparison")
+      return
+    }
+
+    guard
+      let expression = comparison.expression.as(KeyPath<Data, RawRepresentableValue>.self)
+    else {
+      XCTFail("the left side of the comparison should be a key path")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? RawRepresentableValue.RawValue)
+
+    XCTAssertEqual(expression, \Data.rawRepresentable)
+    XCTAssertEqual(comparison.operator, .equal)
+    XCTAssertEqual(value, 0)
+  }
+
   func testOptionalKeyPathEqualToNil() throws {
     let predicate: Predicate<Data> = \Data.optionalRelationship == nil
 
@@ -470,6 +501,104 @@ final class OperatorTests: XCTestCase {
     XCTAssertEqual(keyPath.elementKeyPath, \Relationship.count)
     XCTAssertEqual(comparison.operator, .notEqual)
     XCTAssertEqual(value, 5)
+  }
+
+  @available(iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+  func testKeyPathNotEqualIdentifiable() throws {
+    struct Data {
+      let identifiable: IdentifiableData
+    }
+
+    struct IdentifiableData: Identifiable, Equatable {
+      let id: String
+    }
+
+    let predicate = \Data.identifiable != IdentifiableData(id: "1")
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("identifiable.id != 1 should result in a comparison")
+      return
+    }
+
+    guard
+      let expression = comparison.expression.as(ObjectIdentifier<KeyPath<Data, IdentifiableData>, String>.self)
+    else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? IdentifiableData.ID)
+
+    XCTAssertEqual(expression.root, \Data.identifiable)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, "1")
+  }
+
+  func testKeyPathNotEqualRawRepresentable() throws {
+    struct Data {
+      let rawRepresentable: RawRepresentableValue
+    }
+
+    enum RawRepresentableValue: Int {
+      case zero
+      case one
+    }
+
+    let predicate = \Data.rawRepresentable != .zero
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("rawRepresentable != .zero should result in a comparison")
+      return
+    }
+
+    guard
+      let expression = comparison.expression.as(KeyPath<Data, RawRepresentableValue>.self)
+    else {
+      XCTFail("the left side of the comparison should be a key path")
+      return
+    }
+
+    let value = try XCTUnwrap(comparison.value as? RawRepresentableValue.RawValue)
+
+    XCTAssertEqual(expression, \Data.rawRepresentable)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertEqual(value, 0)
+  }
+
+  func testOptionalKeyPathNotEqualToNil() throws {
+    let predicate: Predicate<Data> = \Data.optionalRelationship != nil
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("optionalRelationship != nil should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, Relationship?>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    XCTAssertEqual(keyPath, \Data.optionalRelationship)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertNotNil(comparison.value as? Nil)
+  }
+
+  func testOptionalArrayKeyPathNotEqualToNil() throws {
+    let predicate: Predicate<Data> = \Data.optionalRelationships != nil
+
+    guard case let .comparison(comparison) = predicate else {
+      XCTFail("optionalRelationships != nil should result in a comparison")
+      return
+    }
+
+    guard let keyPath = comparison.expression.as(KeyPath<Data, [Relationship]?>.self) else {
+      XCTFail("the left side of the comparison should be a key path expression")
+      return
+    }
+
+    XCTAssertEqual(keyPath, \Data.optionalRelationships)
+    XCTAssertEqual(comparison.operator, .notEqual)
+    XCTAssertNotNil(comparison.value as? Nil)
   }
 
   // MARK: - >=
