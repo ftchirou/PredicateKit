@@ -164,3 +164,155 @@ extension FetchRequest {
     self.init(predicate: true)
   }
 }
+
+@available(iOS 15.0, watchOS 8.0, tvOS 15.0, macOS 12.0, *)
+extension FetchedResults where Result: NSManagedObject {
+  /// Changes the `Predicate` used in filtering the `@SwiftUI.FetchRequest` property.
+  ///
+  /// - Parameter newPredicate: The predicate used to define a filter for the fetched results.
+  ///
+  /// ## Example
+  ///
+  ///     struct ContentView: View {
+  ///       @SwiftUI.FetchRequest(predicate: \Note.text == "Hello, World!")
+  ///       var notes: FetchedResults<Note>
+  ///
+  ///       var body: some View {
+  ///         List(notes, id: \.self) {
+  ///           Text($0.text)
+  ///         }
+  ///         Button("Show All") {
+  ///           notes.updatePredicate(true)
+  ///         }
+  ///       }
+  ///
+  public func updatePredicate(_ newPredicate: Predicate<Result>) {
+    let entityName = Result.entity().name ?? String(describing: Result.self)
+    let fetchRequestBuilder = NSFetchRequestBuilder(entityName: entityName)
+    let nsFetchRequest: NSFetchRequest<Result> = fetchRequestBuilder.makeRequest(
+      from: FetchRequest(predicate: newPredicate)
+    )
+    self.nsPredicate = nsFetchRequest.predicate
+  }
+}
+
+@available(iOS 15.0, watchOS 8.0, tvOS 15.0, macOS 12.0, *)
+extension SectionedFetchRequest where Result: NSManagedObject {
+  /// Creates an instance from the provided fetch request and animation.
+  ///
+  /// - Parameter fetchRequest: The request used to produce the fetched results.
+  /// - Parameter sectionIdentifier: A key path that SwiftUI applies to the Result type to get an object’s section identifier.
+  /// - Parameter animation: The animation used for any changes to the fetched results.
+  ///
+  /// ## Example
+  ///
+  ///      struct ContentView: View {
+  ///        @SwiftUI.SectionedFetchRequest(
+  ///          fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+  ///          sectionIdentifier: \.billingInfo.accountType
+  ///        )
+  ///        var users: SectionedFetchResults<String, User>
+  ///
+  ///        var body: some View {
+  ///          List(users, id: \.id) { section in
+  ///            Section(section.id) {
+  ///              ForEach(section, id: \.objectID) { user in
+  ///                Text(user.name)
+  ///              }
+  ///            }
+  ///          }
+  ///        }
+  ///
+  public init(
+    fetchRequest: FetchRequest<Result>,
+    sectionIdentifier: KeyPath<Result, SectionIdentifier>,
+    animation: Animation? = nil
+  ) {
+    let entityName = Result.entity().name ?? String(describing: Result.self)
+    let fetchRequestBuilder = NSFetchRequestBuilder(entityName: entityName)
+    self.init(
+      fetchRequest: fetchRequestBuilder.makeRequest(from: fetchRequest),
+      sectionIdentifier: sectionIdentifier,
+      animation: animation
+    )
+  }
+
+  /// Creates an instance from the provided fetch request and transaction.
+  ///
+  /// - Parameter fetchRequest: The request used to produce the fetched results.
+  /// - Parameter sectionIdentifier: A key path that SwiftUI applies to the Result type to get an object’s section identifier.
+  /// - Parameter transaction: The transaction used for any changes to the fetched results.
+  ///
+  /// ## Example
+  ///
+  ///      struct ContentView: View {
+  ///        @SwiftUI.SectionedFetchRequest(
+  ///          fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+  ///          sectionIdentifier: \.billingInfo.accountType
+  ///          transaction: Transaction(animation: .easeIn)
+  ///        )
+  ///        var users: SectionedFetchResults<String, User>
+  ///
+  ///        var body: some View {
+  ///          List(users, id: \.id) { section in
+  ///            Section(section.id) {
+  ///              ForEach(section, id: \.objectID) { user in
+  ///                Text(user.name)
+  ///              }
+  ///            }
+  ///          }
+  ///        }
+  ///
+  public init(
+    fetchRequest: FetchRequest<Result>,
+    sectionIdentifier: KeyPath<Result, SectionIdentifier>,
+    transaction: Transaction
+  ) {
+    let entityName = Result.entity().name ?? String(describing: Result.self)
+    let fetchRequestBuilder = NSFetchRequestBuilder(entityName: entityName)
+    self.init(
+      fetchRequest: fetchRequestBuilder.makeRequest(from: fetchRequest),
+      sectionIdentifier: sectionIdentifier,
+      transaction: transaction
+    )
+  }
+}
+
+@available(iOS 15.0, watchOS 8.0, tvOS 15.0, macOS 12.0, *)
+extension SectionedFetchResults where Result: NSManagedObject {
+  /// Changes the `Predicate` used in filtering the `@SwiftUI.FetchRequest` property.
+  ///
+  /// - Parameter newPredicate: The predicate used to define a filter for the fetched results.
+  ///
+  /// ## Example
+  ///
+  ///      struct ContentView: View {
+  ///        @SwiftUI.SectionedFetchRequest(
+  ///          fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+  ///          sectionIdentifier: \.billingInfo.accountType
+  ///          transaction: Transaction(animation: .easeIn)
+  ///        )
+  ///        var users: SectionedFetchResults<String, User>
+  ///
+  ///        var body: some View {
+  ///          List(users, id: \.id) { section in
+  ///            Section(section.id) {
+  ///              ForEach(section, id: \.objectID) { user in
+  ///                Text(user.name)
+  ///              }
+  ///            }
+  ///          }
+  ///          Button("Show All") {
+  ///            users.updatePredicate(true)
+  ///          }
+  ///        }
+  ///
+  public func updatePredicate(_ newPredicate: Predicate<Result>) {
+    let entityName = Result.entity().name ?? String(describing: Result.self)
+    let fetchRequestBuilder = NSFetchRequestBuilder(entityName: entityName)
+    let nsFetchRequest: NSFetchRequest<Result> = fetchRequestBuilder.makeRequest(
+      from: FetchRequest(predicate: newPredicate)
+    )
+    self.nsPredicate = nsFetchRequest.predicate
+  }
+}

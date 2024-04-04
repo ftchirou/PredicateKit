@@ -21,6 +21,9 @@
 import CoreData
 import Foundation
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 import XCTest
 
 @testable import PredicateKit
@@ -201,6 +204,284 @@ class SwiftUISupportTests: XCTestCase {
     )
 
     XCTAssertEqual(request.projectedValue.wrappedValue.nsPredicate, NSPredicate(value: true))
+  }
+  
+  #if canImport(UIKit) && !canImport(WatchKit)
+  func testFetchRequestPropertyWrapperWithChangingPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.FetchRequest(fetchRequest: FetchRequest())
+      var notes: FetchedResults<Note>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(notes, id: \.self) {
+          Text($0.text)
+        }.onAppear {
+          notes.updatePredicate(\Note.text == "Hello, World!")
+
+          let comparison = notes.nsPredicate as? NSComparisonPredicate
+          XCTAssertEqual(comparison?.leftExpression, NSExpression(forKeyPath: "text"))
+          XCTAssertEqual(comparison?.rightExpression, NSExpression(forConstantValue: "Hello, World!"))
+          XCTAssertEqual(comparison?.predicateOperatorType, .equalTo)
+          XCTAssertEqual(comparison?.comparisonPredicateModifier, .direct)
+
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+
+    // Trick the system into installing the view in a "view hierarchy" so we can
+    // access any underlying @StateObject without crashing.
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithNoPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest()
+          .sorted(by: \.billingInfo.accountType, .ascending)
+          .sorted(by: \.name, .ascending),
+        sectionIdentifier: \.billingInfo.accountType
+      )
+      var users: SectionedFetchResults<String, User>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }.onAppear {
+          XCTAssertEqual(users.sectionIdentifier, \.billingInfo.accountType)
+          XCTAssertEqual(users.nsPredicate, NSPredicate(value: true))
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithAnimationAndNoPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest()
+          .sorted(by: \.billingInfo.accountType, .ascending)
+          .sorted(by: \.name, .ascending),
+        sectionIdentifier: \.billingInfo.accountType,
+        animation: .easeIn
+      )
+      var users: SectionedFetchResults<String, User>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }.onAppear {
+          XCTAssertEqual(users.nsPredicate, NSPredicate(value: true))
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+
+    let transaction = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_users", "transaction") as? Transaction
+    )
+
+    XCTAssertEqual(transaction.animation, .easeIn)
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithTransactionAndNoPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest()
+          .sorted(by: \.billingInfo.accountType, .ascending)
+          .sorted(by: \.name, .ascending),
+        sectionIdentifier: \.billingInfo.accountType,
+        transaction: .nonContinuousEaseInOut
+      )
+      var users: SectionedFetchResults<String, User>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }.onAppear {
+          XCTAssertEqual(users.nsPredicate, NSPredicate(value: true))
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+
+    let transaction = try XCTUnwrap(
+      Mirror(reflecting: view).descendant("content", "_users", "transaction") as? Transaction
+    )
+
+    XCTAssertEqual(transaction.animation, .easeInOut)
+    XCTAssertFalse(transaction.isContinuous)
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithBasicPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+        sectionIdentifier: \.billingInfo.accountType
+      )
+      var users: SectionedFetchResults<String, User>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }.onAppear {
+          let comparison = users.nsPredicate as? NSComparisonPredicate
+          XCTAssertEqual(comparison?.leftExpression, NSExpression(forKeyPath: "name"))
+          XCTAssertEqual(comparison?.rightExpression, NSExpression(forConstantValue: "John Doe"))
+          XCTAssertEqual(comparison?.predicateOperatorType, .equalTo)
+          XCTAssertEqual(comparison?.comparisonPredicateModifier, .direct)
+
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+  }
+
+  func testSectionedFetchRequestPropertyWrapperWithChangingPredicate() throws {
+    let expectation = self.expectation(description: "assertions complete successfully")
+
+    struct ContentView: View {
+      @SwiftUI.SectionedFetchRequest(
+        fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+        sectionIdentifier: \.billingInfo.accountType
+      )
+      var users: SectionedFetchResults<String, User>
+
+      private let completion: () -> Void
+
+      init(completion: @escaping () -> Void) {
+        self.completion = completion
+      }
+
+      var body: some View {
+        List(users, id: \.id) { section in
+          Section(section.id) {
+            ForEach(section, id: \.objectID) { user in
+              Text(user.name)
+            }
+          }
+        }.onAppear {
+          users.updatePredicate(\User.billingInfo.accountType == "test")
+
+          let comparison = users.nsPredicate as? NSComparisonPredicate
+          XCTAssertEqual(comparison?.leftExpression, NSExpression(forKeyPath: "billingInfo.accountType"))
+          XCTAssertEqual(comparison?.rightExpression, NSExpression(forConstantValue: "test"))
+          XCTAssertEqual(comparison?.predicateOperatorType, .equalTo)
+          XCTAssertEqual(comparison?.comparisonPredicateModifier, .direct)
+
+          completion()
+        }
+      }
+    }
+
+    let view = ContentView { expectation.fulfill() }
+      .environment(\.managedObjectContext, testContainer().viewContext)
+    let window = UIWindow(frame: .zero)
+    window.rootViewController = UIHostingController(rootView: view)
+    window.makeKeyAndVisible()
+
+    wait(for: [expectation], timeout: 5)
+  }
+  #endif
+
+  private func testContainer() -> NSPersistentContainer {
+    let model = NSManagedObjectModel.mergedModel(from: [Bundle(for: SwiftUISupportTests.self)])!
+    return makePersistentContainer(with: model)
   }
 }
 

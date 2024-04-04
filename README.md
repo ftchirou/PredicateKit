@@ -17,6 +17,7 @@ comparisons and logical operators, literal values, and functions.
   - [Fetching objects](#fetching-objects)
   - [Configuring the fetch](#configuring-the-fetch)
   - [Fetching objects with the @FetchRequest property wrapper](#fetching-objects-with-the-fetchrequest-property-wrapper)
+  - [Fetching objects with the @SectionedFetchRequest property wrapper](#fetching-objects-with-the-sectionedfetchrequest-property-wrapper)
   - [Fetching objects with an NSFetchedResultsController](#fetching-objects-with-an-nsfetchedresultscontroller)
   - [Counting objects](#counting-objects)
 - [Documentation](#documentation)
@@ -228,6 +229,94 @@ struct ContentView: View {
   }
 }
 ```
+
+You can update the predicate associated with your `FetchedResults` using `updatePredicate`.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+
+  @SwiftUI.FetchRequest(predicate: \Note.text == "Hello, World!")
+  var notes: FetchedResults<Note>
+
+  var body: some View {
+    List(notes, id: \.self) {
+      Text($0.text)
+    }
+    Button("Show recents") {
+      let recentDate: Date = // ...
+      notes.updatePredicate(\Note.createdAt >= recentDate)
+    }
+  }
+}
+```
+
+This will cause the associated `FetchRequest` to execute a fetch with the new predicate when the `Show recents` button is tapped.
+
+## Fetching objects with the @SectionedFetchRequest property wrapper
+
+PredicateKit also extends the SwiftUI [`@SectionedFetchRequest`](https://developer.apple.com/documentation/swiftui/sectionedfetchrequest) property wrapper to support type-safe predicates.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+  @SwiftUI.SectionedFetchRequest(
+    fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+    sectionIdentifier: \.billingInfo.accountType
+  )
+  var users: SectionedFetchResults<String, User>
+  
+  var body: some View {
+    List(users, id: \.id) { section in
+      Section(section.id) {
+        ForEach(section, id: \.objectID) { user in
+          Text(user.name)
+        }
+      }
+    }
+  }
+```
+
+You can update the predicate associated with your `SectionedFetchedResults` using `updatePredicate`.
+
+###### Example
+
+```swift
+import PredicateKit
+import SwiftUI
+
+struct ContentView: View {
+  @SwiftUI.SectionedFetchRequest(
+    fetchRequest: FetchRequest(predicate: \User.name == "John Doe"),
+    sectionIdentifier: \.billingInfo.accountType
+  )
+  var users: SectionedFetchResults<String, User>
+  
+  var body: some View {
+    List(users, id: \.id) { section in
+      Section(section.id) {
+        ForEach(section, id: \.objectID) { user in
+          Text(user.name)
+        }
+      }
+    }
+    Button("Search") {
+      let query: String = // ...
+      users.updatePredicate((\User.name).contains(query))
+    }
+  }
+}
+```
+
+This will cause the associated `FetchRequest` to execute a fetch with the new predicate when the `Search` button is tapped.
 
 ## Fetching objects with an NSFetchedResultsController
 
