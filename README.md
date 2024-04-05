@@ -684,7 +684,7 @@ let notes: [Note] = try managedObjectContext
   .fetch(where: (\Note.text).contains("Hello, World!") && \Note.creationDate < Date())
   .limit(50) // Return 50 objects matching the predicate.
   .offset(100) // Skip the first 100 objects matching the predicate.
-  .sorted(by: \Note.text) // Sort the matching objects by their creation date.
+  .sorted(by: \Note.creationDate) // Sort the matching objects by their creation date.
   .result()
 ```
 
